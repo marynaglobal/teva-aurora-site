@@ -258,7 +258,7 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
 .faq-card-expanded-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9998;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.22,1,.36,1)}
 .faq-card-expanded-overlay.active{opacity:1}
 .faq-card-expanded-overlay.interactive{pointer-events:auto}
-.faq-card.expanding{position:fixed!important;z-index:9999!important;border-radius:16px;border-color:var(--gold)!important;box-shadow:0 40px 100px rgba(0,0,0,.9),0 0 80px rgba(197,165,114,.25)!important;transition:top .6s cubic-bezier(.22,1,.36,1),left .6s cubic-bezier(.22,1,.36,1),width .6s cubic-bezier(.22,1,.36,1),height .6s cubic-bezier(.22,1,.36,1),border-radius .6s}
+.faq-card.expanding{position:fixed!important;z-index:9999!important;border-radius:16px;border-color:var(--gold)!important;box-shadow:0 40px 100px rgba(0,0,0,.9),0 0 80px rgba(197,165,114,.25)!important;opacity:1!important;transform:none!important;transition:top .6s cubic-bezier(.22,1,.36,1),left .6s cubic-bezier(.22,1,.36,1),width .6s cubic-bezier(.22,1,.36,1),height .6s cubic-bezier(.22,1,.36,1),border-radius .6s}
 .faq-card.expanding .faq-card-overlay{background:linear-gradient(transparent 40%,rgba(0,0,0,.8) 75%)}
 .faq-card.expanding .faq-card-content{transform:translateY(-8px)}
 .faq-card.expanding .faq-detail-text{opacity:1}
@@ -1030,7 +1030,7 @@ document.querySelectorAll('.flr').forEach(r=>{r.addEventListener('mouseenter',()
     card._ph=ph;
 
     /* pin at current position */
-    card.style.cssText='position:fixed;top:'+origRect.top+'px;left:'+origRect.left+'px;width:'+origRect.width+'px;height:'+origRect.height+'px;margin:0;z-index:9999;';
+    card.style.cssText='position:fixed;top:'+origRect.top+'px;left:'+origRect.left+'px;width:'+origRect.width+'px;height:'+origRect.height+'px;margin:0;z-index:9999;opacity:1;transform:none;';
     overlay.classList.add('active');
 
     /* force layout so browser knows the start position */
