@@ -149,10 +149,20 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
 .proj-item-num{font-family:'Playfair Display',serif;font-size:32px;color:rgba(197,165,114,.15);position:absolute;right:30px;top:50%;transform:translateY(-50%);transition:color .3s}
 .proj-item.active .proj-item-num,.proj-item:hover .proj-item-num{color:rgba(197,165,114,.3)}
 
-.partners{display:flex;justify-content:center;gap:50px;align-items:center;padding-top:30px;border-top:1px solid var(--glass-b)}
-.partners img{height:50px;opacity:.9;transition:opacity .3s}
-.partners img:hover{opacity:1}
-.partner-label{font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-top:6px;text-align:center}
+.team-section{margin-top:60px;padding:50px 0 0;border-top:1px solid var(--glass-b)}
+.team-section h3{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,32px);color:#fff;text-align:center;letter-spacing:3px;margin-bottom:6px}
+.team-section .team-sub{text-align:center;color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:40px}
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1000px;margin:0 auto}
+.team-col{background:rgba(255,255,255,.03);border:1px solid rgba(197,165,114,.12);border-radius:16px;padding:36px 30px;text-align:center}
+.team-col-title{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;font-weight:500}
+.team-logos{display:flex;justify-content:center;align-items:center;gap:30px;flex-wrap:wrap}
+.team-logos img{height:45px;opacity:.85;transition:all .3s;filter:brightness(1)}
+.team-logos img:hover{opacity:1;transform:scale(1.08)}
+.team-logos .logo-label{font-size:9px;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin-top:8px}
+.team-photo{margin-top:40px;border-radius:14px;overflow:hidden;border:1px solid rgba(197,165,114,.2);max-width:800px;margin-left:auto;margin-right:auto}
+.team-photo img{width:100%;display:block;transition:transform .6s}
+.team-photo:hover img{transform:scale(1.03)}
+@media(max-width:768px){.team-grid{grid-template-columns:1fr}}
 
 /* LOCATION */
 .loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:35px;max-width:1200px;margin:0 auto}
@@ -524,10 +534,28 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
       </div>
     </div>
 
-    <div class="partners reveal">
-      <div><img src="img/logo_habitat.png" alt="Habitat"><div class="partner-label">Constructor</div></div>
-      <div><span style="font-size:20px;color:var(--text-dim);letter-spacing:5px;font-weight:200">BS</span><div class="partner-label">Diseño</div></div>
-      <div><img src="img/logo_global_v2.png" alt="Global RE"><div class="partner-label">Comercialización</div></div>
+    <div class="team-section reveal">
+      <h3>El Equipo Detrás de TEVA</h3>
+      <div class="team-sub">Desarrollo, construcción y comercialización de excelencia</div>
+      <div class="team-grid">
+        <div class="team-col">
+          <div class="team-col-title">Desarrollo & Construcción</div>
+          <div class="team-logos">
+            <div><img src="img/logo_habitat_new.png" alt="Habitat Grupo Constructor" style="height:55px"><div class="logo-label">Constructor</div></div>
+            <div><img src="img/logo_contempo.png" alt="Contempo Real Estate" style="height:50px"><div class="logo-label">Desarrollador</div></div>
+            <div><img src="img/logo_beyond.png" alt="Beyond Spaces" style="height:50px"><div class="logo-label">Diseño</div></div>
+          </div>
+        </div>
+        <div class="team-col">
+          <div class="team-col-title">Marketing & Ventas</div>
+          <div class="team-logos">
+            <div><img src="img/logo_global_v2.png" alt="Global Real Estate" style="height:55px"><div class="logo-label">Comercialización</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="team-photo reveal" id="teamPhoto">
+        <img src="img/hd_construction1.jpg" alt="Equipo TEVA en sitio">
+      </div>
     </div>
   </div>
 </section>
