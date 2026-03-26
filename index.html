@@ -240,7 +240,7 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
 
 /* FAQ CARDS */
 .faq-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1200px;margin:0 auto 40px}
-.faq-card{position:relative;height:280px;border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid var(--glass-b);transition:all .4s;background:#000;z-index:1}
+.faq-card{position:relative;height:280px;border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid var(--glass-b);background:#000;z-index:1;transition:border-color .3s,box-shadow .3s}
 .faq-card:hover{border-color:var(--gold);box-shadow:0 15px 40px rgba(197,165,114,.2)}
 .faq-card-bg{position:absolute;inset:0;background-size:cover;background-position:center;object-fit:cover}
 .faq-card-overlay{position:absolute;inset:0;background:linear-gradient(transparent 10%,rgba(0,0,0,.9) 60%);z-index:1}
@@ -253,6 +253,20 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
 .faq-card:hover .faq-detail-text{opacity:1}
 .faq-detail-text p{font-size:12px;color:var(--text);line-height:1.5;margin-bottom:8px}
 .faq-tag{display:inline-block;background:rgba(197,165,114,.2);color:var(--gold);padding:3px 8px;border-radius:4px;font-size:10px;letter-spacing:1px}
+
+/* FAQ CARD FULLSCREEN EXPAND */
+.faq-card-expanded-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9998;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.22,1,.36,1)}
+.faq-card-expanded-overlay.active{opacity:1}
+.faq-card-expanded-overlay.interactive{pointer-events:auto}
+.faq-card.expanding{position:fixed!important;z-index:9999!important;border-radius:16px;border-color:var(--gold)!important;box-shadow:0 40px 100px rgba(0,0,0,.9),0 0 80px rgba(197,165,114,.25)!important;transition:top .6s cubic-bezier(.22,1,.36,1),left .6s cubic-bezier(.22,1,.36,1),width .6s cubic-bezier(.22,1,.36,1),height .6s cubic-bezier(.22,1,.36,1),border-radius .6s}
+.faq-card.expanding .faq-card-overlay{background:linear-gradient(transparent 40%,rgba(0,0,0,.8) 75%)}
+.faq-card.expanding .faq-card-content{transform:translateY(-8px)}
+.faq-card.expanding .faq-detail-text{opacity:1}
+.faq-card.expanding h4{font-size:28px}
+.faq-card.expanding .faq-brief{font-size:16px;max-height:30px}
+.faq-card.expanding .faq-detail-text p{font-size:16px}
+.faq-card.expanding .faq-tag{font-size:13px;padding:5px 12px}
+.faq-card.expanding .faq-card-content{padding:48px}
 .faq-source{text-align:center;font-size:12px;color:var(--text-dim);padding:30px;border-top:1px solid var(--glass-b)}
 
 /* DOWNLOAD CARDS */
@@ -695,6 +709,7 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
   <h2 class="stitle reveal">Ficha Técnica para Asesores</h2>
   <p class="ssub reveal">Pasa el cursor sobre cada tarjeta para ver detalles</p>
   <div class="gline reveal"></div>
+  <div class="faq-card-expanded-overlay" id="faqOverlay"></div>
   <div class="faq-cards">
 
     <div class="faq-card reveal">
@@ -996,5 +1011,85 @@ document.querySelectorAll('.flr').forEach(r=>{r.addEventListener('mouseenter',()
   <div style="position:absolute;top:24px;left:32px;color:var(--gold);font-size:13px;letter-spacing:3px;text-transform:uppercase">Plano de Estacionamiento &mdash; TEVA by Aurora</div>
   <img src="img/parking_plan.png" alt="Plano Estacionamiento" style="max-width:90vw;max-height:85vh;border-radius:12px;border:1px solid var(--glass-b);box-shadow:0 20px 80px rgba(0,0,0,.6)" onclick="event.stopPropagation()">
 </div>
+<script>
+(function(){
+  const overlay=document.getElementById('faqOverlay');
+  const cards=document.querySelectorAll('.faq-card');
+  let activeCard=null,hoverTimer=null,origRect=null,locked=false;
+
+  function expand(card){
+    if(activeCard||locked)return;
+    locked=true;
+    activeCard=card;
+    origRect=card.getBoundingClientRect();
+
+    /* placeholder keeps grid layout stable */
+    const ph=document.createElement('div');
+    ph.style.cssText='height:'+origRect.height+'px;visibility:hidden';
+    card.parentNode.insertBefore(ph,card);
+    card._ph=ph;
+
+    /* pin at current position */
+    card.style.cssText='position:fixed;top:'+origRect.top+'px;left:'+origRect.left+'px;width:'+origRect.width+'px;height:'+origRect.height+'px;margin:0;z-index:9999;';
+    overlay.classList.add('active');
+
+    /* force layout so browser knows the start position */
+    card.offsetHeight;
+    card.classList.add('expanding');
+
+    /* animate to near-fullscreen after paint */
+    setTimeout(()=>{
+      const p=30;
+      card.style.top=p+'px';
+      card.style.left=p+'px';
+      card.style.width=(window.innerWidth-p*2)+'px';
+      card.style.height=(window.innerHeight-p*2)+'px';
+      setTimeout(()=>{locked=false;overlay.classList.add('interactive')},800);
+    },20);
+  }
+
+  function collapse(){
+    if(!activeCard||locked)return;
+    locked=true;
+    const card=activeCard;
+    const phRect=card._ph.getBoundingClientRect();
+    overlay.classList.remove('active');
+    overlay.classList.remove('interactive');
+
+    card.style.top=phRect.top+'px';
+    card.style.left=phRect.left+'px';
+    card.style.width=phRect.width+'px';
+    card.style.height=phRect.height+'px';
+
+    card.addEventListener('transitionend',function done(e){
+      if(e.propertyName!=='width')return;
+      card.removeEventListener('transitionend',done);
+      card.classList.remove('expanding');
+      card.style.cssText='';
+      if(card._ph){card._ph.remove();delete card._ph}
+      activeCard=null;origRect=null;locked=false;
+    });
+  }
+
+  cards.forEach(card=>{
+    card.addEventListener('mouseenter',()=>{
+      clearTimeout(hoverTimer);
+      if(!activeCard&&!locked)hoverTimer=setTimeout(()=>expand(card),180);
+    });
+    card.addEventListener('mouseleave',()=>{
+      clearTimeout(hoverTimer);
+      /* don't collapse — overlay mouseenter handles that */
+    });
+  });
+
+  /* collapse only when mouse leaves the expanded card — listen on overlay */
+  overlay.addEventListener('mouseenter',()=>{
+    if(activeCard&&!locked)collapse();
+  });
+  overlay.addEventListener('click',()=>{
+    if(activeCard&&!locked)collapse();
+  });
+})();
+</script>
 </body>
 </html>
