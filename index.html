@@ -130,20 +130,20 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
 
 /* PROJECT FEATURES */
 /* INTERACTIVE PROJECT CARDS */
-.proj-showcase{max-width:1300px;margin:0 auto 60px;display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:18px;overflow:hidden;border:1px solid rgba(197,165,114,.15);min-height:500px}
+.proj-showcase{max-width:1600px;margin:0 auto 60px;display:grid;grid-template-columns:7fr 3fr;gap:0;border-radius:18px;overflow:hidden;border:1px solid rgba(197,165,114,.15);height:85vh;max-height:900px}
 .proj-preview{position:relative;overflow:hidden;background:#111}
 .proj-preview img,.proj-preview video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease}
 .proj-preview img.active,.proj-preview video.active{opacity:1}
-.proj-feature-list{background:rgba(10,10,10,.95);padding:0;display:flex;flex-direction:column}
-.proj-item{padding:28px 36px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .4s ease;position:relative;overflow:hidden}
+.proj-feature-list{background:rgba(10,10,10,.95);padding:0;display:flex;flex-direction:column;overflow-y:auto}
+.proj-item{padding:22px 32px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .4s ease;position:relative;overflow:hidden;flex:1;display:flex;flex-direction:column;justify-content:center}
 .proj-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);transform:scaleY(0);transition:transform .4s ease;transform-origin:top}
-.proj-item:hover,.proj-item.active{background:rgba(197,165,114,.06)}
+.proj-item:hover,.proj-item.active{background:rgba(197,165,114,.08)}
 .proj-item:hover::before,.proj-item.active::before{transform:scaleY(1)}
-.proj-item h4{font-family:'Playfair Display',serif;font-size:18px;color:var(--white);letter-spacing:1px;margin:0 0 4px;transition:color .3s}
+.proj-item h4{font-family:'Playfair Display',serif;font-size:17px;color:var(--white);letter-spacing:1px;margin:0 0 3px;transition:color .3s}
 .proj-item:hover h4,.proj-item.active h4{color:var(--gold)}
 .proj-item-brief{font-size:10px;color:var(--gold);letter-spacing:2.5px;text-transform:uppercase;font-weight:500;opacity:.7}
 .proj-item-desc{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;max-height:0;opacity:0;overflow:hidden;transition:all .5s ease;margin-top:0}
-.proj-item.active .proj-item-desc{max-height:100px;opacity:1;margin-top:10px}
+.proj-item.active .proj-item-desc{max-height:100px;opacity:1;margin-top:8px}
 .proj-item .vid-badge{display:inline-block;margin-left:10px;font-size:9px;color:var(--gold);letter-spacing:1.5px;border:1px solid rgba(197,165,114,.4);padding:2px 8px;border-radius:10px;vertical-align:middle}
 @keyframes slowZoom{0%{transform:scale(1)}100%{transform:scale(1.12)}}
 .proj-item-num{font-family:'Playfair Display',serif;font-size:32px;color:rgba(197,165,114,.15);position:absolute;right:30px;top:50%;transform:translateY(-50%);transition:color .3s}
@@ -456,7 +456,7 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
         <video muted loop playsinline preload="metadata" poster="img/elevador_teva.png" data-idx="4"><source src="vid/elevador.mp4" type="video/mp4"></video>
         <video muted loop playsinline preload="metadata" poster="img/hd_building_real2.jpg" data-idx="5"><source src="vid/bodega_teva.mp4" type="video/mp4"></video>
         <img src="img/parking_plan.png" alt="Estacionamiento" data-idx="6">
-        <img src="img/kitchen_teva.png" alt="Acabados" data-idx="7">
+        <img src="img/cocina_teva_new.jpg" alt="Acabados" data-idx="7">
       </div>
       <div class="proj-feature-list" id="projList">
         <div class="proj-item active" data-idx="0">
@@ -546,7 +546,7 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
       <img src="img/hd_interior_living.jpg" alt="Sala" class="on">
       <img src="img/terraza_teva_hd.png" alt="Terraza HD">
       <video muted loop playsinline preload="metadata" src="vid/rooftop_teva.mp4"></video>
-      <img src="img/kitchen_teva.png" alt="Cocina">
+      <img src="img/cocina_teva_new.jpg" alt="Cocina">
       <img src="img/balcony.jpg" alt="Balcón">
       <video muted loop playsinline preload="metadata" src="vid/elevador.mp4"></video>
       <img src="img/bedroom.jpg" alt="Recámara">
@@ -561,7 +561,7 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
       <img src="img/hd_interior_living.jpg" class="on" onclick="galGo(0)">
       <img src="img/terraza_teva_hd.png" onclick="galGo(1)">
       <img src="img/hd_rooftop_sunset.jpg" onclick="galGo(2)" style="border:1px solid var(--gold)">
-      <img src="img/kitchen_teva.png" onclick="galGo(3)">
+      <img src="img/cocina_teva_new.jpg" onclick="galGo(3)">
       <img src="img/balcony.jpg" onclick="galGo(4)">
       <img src="img/elevador_teva.png" onclick="galGo(5)" style="border:1px solid var(--gold)">
       <img src="img/bedroom.jpg" onclick="galGo(6)">
@@ -737,7 +737,7 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
     </div>
 
     <div class="faq-card reveal">
-      <div class="faq-card-bg" style="background-image:url('img/kitchen_teva.png')"></div>
+      <div class="faq-card-bg" style="background-image:url('img/cocina_teva_new.jpg')"></div>
       <div class="faq-card-overlay"></div>
       <div class="faq-card-content">
         <h4>Cocina Equipada</h4>
