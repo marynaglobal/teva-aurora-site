@@ -1204,7 +1204,7 @@ function tevaClose(){document.getElementById('tevaChat').style.display='none';do
 function tevaAddMsg(role,text,imgSrc){
   const d=document.getElementById('tevaMsgs');const m=document.createElement('div');
   m.className='tc-msg '+(role==='user'?'user':'bot');
-  let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" style="color:var(--gold);text-decoration:underline">$1</a>').replace(/\n/g,'<br>');
+  let html=text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img class="tc-img" src="$2" alt="$1" loading="lazy">').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" style="color:var(--gold);text-decoration:underline">$1</a>').replace(/\n/g,'<br>');
   if(imgSrc)html='<img class="tc-img" src="'+imgSrc+'"><br>'+html;
   m.innerHTML=html;d.appendChild(m);d.scrollTop=d.scrollHeight;
 }
