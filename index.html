@@ -1185,7 +1185,7 @@ document.querySelectorAll('.flr').forEach(r=>{r.addEventListener('mouseenter',()
     <div class="tc-close" onclick="tevaClose()">&times;</div>
   </div>
   <div class="tc-msgs" id="tevaMsgs">
-    <div class="tc-msg bot">Hola, soy <strong>TEVA</strong>, tu asistente AI del proyecto TEVA by AURORA. Tengo todos los datos: precios, m², amenidades, plan de pagos, comisiones, material en español e inglés.<br><br>Para darte una atención personalizada, <strong>¿cuál es tu nombre y de qué agencia inmobiliaria eres?</strong></div>
+    <div class="tc-msg bot">Hey! Soy <strong>TEVA</strong>, tu colega AI del proyecto TEVA by AURORA en La Paz. Conozco cada detalle del proyecto y estoy aquí para echarte la mano.<br><br>Antes de arrancar — <strong>¿cómo te llamas y de qué agencia vienes?</strong></div>
   </div>
   <div class="tc-input">
     <label class="tc-attach" title="Adjuntar imagen">
@@ -1204,7 +1204,7 @@ function tevaClose(){document.getElementById('tevaChat').style.display='none';do
 function tevaAddMsg(role,text,imgSrc){
   const d=document.getElementById('tevaMsgs');const m=document.createElement('div');
   m.className='tc-msg '+(role==='user'?'user':'bot');
-  let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" style="color:var(--gold);text-decoration:underline">$1</a>').replace(/\n/g,'<br>');
   if(imgSrc)html='<img class="tc-img" src="'+imgSrc+'"><br>'+html;
   m.innerHTML=html;d.appendChild(m);d.scrollTop=d.scrollHeight;
 }
