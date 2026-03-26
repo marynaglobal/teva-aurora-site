@@ -5,1243 +5,501 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TEVA by AURORA | La Joya del Malecón</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Raleway:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --gold: #C5A572;
-  --gold-light: #D4BA8A;
-  --gold-dark: #A88B5E;
-  --dark: #080808;
-  --dark-brown: #12100D;
-  --cream: #F5F0E8;
-  --white: #FFFFFF;
-  --text: rgba(255,255,255,0.9);
-  --text-dim: rgba(255,255,255,0.5);
-  --glass: rgba(255,255,255,0.04);
-  --glass-b: rgba(197,165,114,0.15);
-}
+:root{--gold:#C5A572;--gold-light:#D4BA8A;--gold-dark:#A88B5E;--dark:#080808;--dark-brown:#12100D;--white:#FFF;--text:rgba(255,255,255,.9);--text-dim:rgba(255,255,255,.5);--glass:rgba(255,255,255,.04);--glass-b:rgba(197,165,114,.15)}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{font-family:'Raleway',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
+img{max-width:100%;height:auto}
 
-/* LOADER */
-#loader{position:fixed;inset:0;background:var(--dark);z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1s,visibility 1s}
-#loader.done{opacity:0;visibility:hidden}
-#loader .ring{width:100px;height:100px;border:2px solid transparent;border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;position:absolute}
-#loader .ring:nth-child(2){width:80px;height:80px;border-top-color:transparent;border-right-color:var(--gold-light);animation-duration:1.5s;animation-direction:reverse}
-#loader .brand{font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);letter-spacing:10px;animation:pulse 1.5s ease infinite}
-#loader small{margin-top:20px;color:var(--text-dim);font-size:11px;letter-spacing:4px;text-transform:uppercase}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
-
-/* TOP NAV */
-.topnav{position:fixed;top:0;left:0;width:100%;padding:20px 40px;display:flex;justify-content:space-between;align-items:center;z-index:999;transition:all .4s}
-.topnav.scrolled{background:rgba(8,8,8,.95);backdrop-filter:blur(20px);padding:10px 40px;border-bottom:1px solid var(--glass-b)}
-.topnav img{height:36px;transition:height .3s}
-.topnav.scrolled img{height:28px}
-.topnav .links{display:flex;gap:28px}
-.topnav .links a{color:var(--text-dim);text-decoration:none;font-size:11px;letter-spacing:3px;text-transform:uppercase;transition:color .3s;font-weight:500}
+/* NAV - compact mobile */
+.topnav{position:fixed;top:0;left:0;width:100%;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:999;background:rgba(8,8,8,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-b)}
+.topnav img{height:28px}
+.topnav .links{display:flex;gap:14px;flex-wrap:wrap}
+.topnav .links a{color:var(--text-dim);text-decoration:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;transition:color .3s}
 .topnav .links a:hover{color:var(--gold)}
 
-/* NAV DOTS */
-.dots{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:999;display:flex;flex-direction:column;gap:10px}
-.dots a{width:8px;height:8px;border:1px solid rgba(197,165,114,.4);border-radius:50%;display:block;transition:all .3s;position:relative}
-.dots a.on,.dots a:hover{background:var(--gold);border-color:var(--gold);transform:scale(1.4)}
-.dots a .tip{position:absolute;right:20px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.85);color:var(--gold);padding:4px 10px;border-radius:4px;font-size:10px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .3s}
-.dots a:hover .tip{opacity:1}
-
-/* HERO */
-.hero{height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.hero video{position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;transform:translate(-50%,-50%);object-fit:cover;filter:brightness(.5)}
-.hero .overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.3),rgba(0,0,0,.6));z-index:1}
-.hero-c{position:relative;z-index:2;text-align:center}
-.hero-c img{width:320px;margin-bottom:20px;opacity:0}
-.hero-c .tag{font-family:'Playfair Display',serif;font-size:clamp(20px,3.5vw,34px);color:var(--gold);letter-spacing:4px;opacity:0}
-.hero-c .line{width:0;height:1px;background:var(--gold);margin:18px auto;opacity:0}
-.hero-c .loc{font-size:13px;letter-spacing:8px;text-transform:uppercase;color:var(--text-dim);opacity:0}
-.hero-c .sub{font-size:16px;color:var(--text);font-weight:200;letter-spacing:3px;margin-top:12px;opacity:0}
-.scroll-arrow{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0}
-.scroll-arrow span{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--text-dim)}
-.scroll-arrow i{width:18px;height:18px;border-right:1px solid var(--gold);border-bottom:1px solid var(--gold);transform:rotate(45deg);animation:bounce 2s ease infinite}
-@keyframes bounce{0%,20%,50%,80%,100%{transform:rotate(45deg)translateY(0)}40%{transform:rotate(45deg)translateY(8px)}}
-#particles{position:absolute;inset:0;z-index:1;pointer-events:none}
-.p{position:absolute;width:3px;height:3px;background:var(--gold);border-radius:50%;opacity:0;animation:pfloat linear infinite}
-@keyframes pfloat{0%{transform:translateY(100vh)translateX(0);opacity:0}10%{opacity:.5}90%{opacity:.2}100%{transform:translateY(-100px)translateX(80px);opacity:0}}
-
-/* KEN BURNS */
-@keyframes kb1{0%{transform:scale(1)translate(0,0)}100%{transform:scale(1.15)translate(-2%,-1%)}}
-@keyframes kb2{0%{transform:scale(1.1)translate(-1%,-1%)}100%{transform:scale(1)translate(1%,1%)}}
-@keyframes kb3{0%{transform:scale(1)translate(1%,0)}100%{transform:scale(1.12)translate(-1%,-2%)}}
-.kb{animation-duration:20s;animation-fill-mode:both;animation-timing-function:ease-in-out;animation-iteration-count:infinite;animation-direction:alternate}
-.kb1{animation-name:kb1}.kb2{animation-name:kb2}.kb3{animation-name:kb3}
-
-/* FULL IMAGE SECTIONS */
-.full-img{height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.full-img .bg{position:absolute;inset:-10%;width:120%;height:120%;background-size:cover;background-position:center;object-fit:cover}
-.full-img .dark{position:absolute;inset:0;background:rgba(0,0,0,.35)}
-.full-img .c{position:relative;z-index:2;text-align:center;padding:40px;max-width:900px}
-
-/* VIDEO DIVIDER */
-.vid-divider{height:60vh;position:relative;overflow:hidden}
-.vid-divider video{position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;transform:translate(-50%,-50%);object-fit:cover}
-.vid-divider .c{position:relative;z-index:2;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px}
-.vid-divider h2{font-size:clamp(24px,4vw,48px);letter-spacing:4px}
-.vid-divider .goldtext{color:var(--gold);font-family:'Playfair Display',serif;font-size:clamp(16px,2vw,22px);font-style:italic;margin-top:12px}
-
 /* SECTIONS */
-.sec{padding:120px 6%;position:relative}
+.sec{padding:60px 5%;position:relative}
 .sec-dark{background:var(--dark)}
 .sec-brown{background:var(--dark-brown)}
-.stitle{font-size:clamp(28px,4vw,50px);text-align:center;margin-bottom:8px}
-.ssub{text-align:center;color:var(--gold);font-size:15px;letter-spacing:4px;margin-bottom:12px}
-.gline{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:15px auto 50px}
-.reveal{opacity:0;transform:translateY(40px)}
+.stitle{font-size:clamp(24px,5vw,40px);text-align:center;margin-bottom:6px}
+.ssub{text-align:center;color:var(--gold);font-size:13px;letter-spacing:3px;margin-bottom:8px}
+.gline{width:40px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:10px auto 30px}
 
-/* OPORTUNIDAD - SPLIT */
-.split-sec{display:flex;min-height:100vh;overflow:hidden}
-.split-img{flex:1;position:relative;overflow:hidden}
-.split-img .bg{position:absolute;inset:-5%;width:110%;height:110%;background-size:cover;background-position:center}
-.split-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,var(--dark-brown))}
-.split-txt{flex:1;display:flex;flex-direction:column;justify-content:center;padding:80px 60px;background:var(--dark-brown)}
-.split-txt h2{font-size:clamp(26px,3.5vw,44px);line-height:1.2;margin-bottom:30px}
-.split-txt p{font-size:17px;line-height:1.9;margin-bottom:30px;font-weight:300}
-.highlight{display:inline-block;border:1px solid var(--gold);padding:16px 35px;color:var(--gold);font-size:20px;font-weight:600;letter-spacing:3px;position:relative;overflow:hidden}
-.highlight::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(197,165,114,.1),transparent);animation:shimmer 3s ease infinite}
-@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+/* HERO - compact, image only */
+.hero{height:70vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.hero .bg{position:absolute;inset:0;background:url('img/hero.jpg')center/cover;filter:brightness(.45)}
+.hero-c{position:relative;z-index:2;text-align:center;padding:20px}
+.hero-c img{width:180px;margin-bottom:16px}
+.hero-c .tag{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,32px);color:var(--gold);letter-spacing:3px}
+.hero-c .welcome{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,48px);color:#fff;letter-spacing:2px;margin-bottom:30px}
+.hero-c .loc{font-size:12px;letter-spacing:6px;text-transform:uppercase;color:var(--text-dim);margin-top:10px}
 
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}
-.stat{background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;padding:35px 20px;text-align:center;backdrop-filter:blur(10px);transition:all .4s}
-.stat:hover{transform:translateY(-8px);border-color:var(--gold);box-shadow:0 20px 40px rgba(197,165,114,.1)}
-.stat-n{font-family:'Playfair Display',serif;font-size:44px;color:var(--gold);font-weight:700}
-.stat-l{font-size:13px;color:var(--text);margin-top:8px;line-height:1.5}
-
-/* NETWORK */
-.net-grid{display:flex;gap:60px;align-items:center;max-width:1100px;margin:0 auto}
-.net-map{flex:0 0 320px}
-.net-map img{width:100%;border-radius:12px}
-.net-info{flex:1}
-.net-item{display:flex;align-items:flex-start;gap:16px;padding:16px;border-radius:8px;margin-bottom:12px;transition:background .3s}
-.net-item:hover{background:var(--glass)}
-.net-icon{width:42px;height:42px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gold);font-size:15px}
-.net-item p{font-size:15px;line-height:1.6}
-.net-item strong{color:var(--gold)}
-
-/* PROJECT FEATURES */
-/* INTERACTIVE PROJECT CARDS */
-.proj-showcase{max-width:1600px;margin:0 auto 60px;display:grid;grid-template-columns:7fr 3fr;gap:0;border-radius:18px;overflow:hidden;border:1px solid rgba(197,165,114,.15);height:85vh;max-height:900px}
-.proj-preview{position:relative;overflow:hidden;background:#111}
-.proj-preview img,.proj-preview video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease}
-.proj-preview img.active,.proj-preview video.active{opacity:1}
-.proj-feature-list{background:rgba(10,10,10,.95);padding:0;display:flex;flex-direction:column;overflow-y:auto}
-.proj-item{padding:22px 32px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .4s ease;position:relative;overflow:hidden;flex:1;display:flex;flex-direction:column;justify-content:center}
-.proj-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);transform:scaleY(0);transition:transform .4s ease;transform-origin:top}
-.proj-item:hover,.proj-item.active{background:rgba(197,165,114,.08)}
-.proj-item:hover::before,.proj-item.active::before{transform:scaleY(1)}
-.proj-item h4{font-family:'Playfair Display',serif;font-size:17px;color:var(--white);letter-spacing:1px;margin:0 0 3px;transition:color .3s}
-.proj-item:hover h4,.proj-item.active h4{color:var(--gold)}
-.proj-item-brief{font-size:10px;color:var(--gold);letter-spacing:2.5px;text-transform:uppercase;font-weight:500;opacity:.7}
-.proj-item-desc{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;max-height:0;opacity:0;overflow:hidden;transition:all .5s ease;margin-top:0}
-.proj-item.active .proj-item-desc{max-height:100px;opacity:1;margin-top:8px}
-.proj-item .vid-badge{display:inline-block;margin-left:10px;font-size:9px;color:var(--gold);letter-spacing:1.5px;border:1px solid rgba(197,165,114,.4);padding:2px 8px;border-radius:10px;vertical-align:middle}
-@keyframes slowZoom{0%{transform:scale(1)}100%{transform:scale(1.12)}}
-.proj-item-num{font-family:'Playfair Display',serif;font-size:32px;color:rgba(197,165,114,.15);position:absolute;right:30px;top:50%;transform:translateY(-50%);transition:color .3s}
-.proj-item.active .proj-item-num,.proj-item:hover .proj-item-num{color:rgba(197,165,114,.3)}
-
-.team-section{margin-top:60px;padding:50px 0 0;border-top:1px solid var(--glass-b)}
-.team-section h3{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,32px);color:#fff;text-align:center;letter-spacing:3px;margin-bottom:6px}
-.team-section .team-sub{text-align:center;color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:40px}
-.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1000px;margin:0 auto}
-.team-col{background:rgba(255,255,255,.03);border:1px solid rgba(197,165,114,.12);border-radius:16px;padding:36px 30px;text-align:center}
-.team-col-title{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;font-weight:500}
-.team-logos{display:flex;justify-content:center;align-items:center;gap:30px;flex-wrap:wrap}
-.team-logos img{height:45px;opacity:.85;transition:all .3s;filter:brightness(1)}
-.team-logos img:hover{opacity:1;transform:scale(1.08)}
-.team-logos .logo-label{font-size:9px;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin-top:8px}
-.team-photo{margin-top:40px;border-radius:14px;overflow:hidden;border:1px solid rgba(197,165,114,.2);max-width:800px;margin-left:auto;margin-right:auto}
-.team-photo img{width:100%;display:block;transition:transform .6s}
-.team-photo:hover img{transform:scale(1.03)}
-@media(max-width:768px){.team-grid{grid-template-columns:1fr}}
+/* QUICK SPECS */
+.specs-row{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:600px;margin:0 auto}
+.spec-card{padding:16px;background:var(--glass);border:1px solid var(--glass-b);border-radius:8px;text-align:center;transition:border-color .3s}
+.spec-card:hover{border-color:var(--gold)}
+.spec-card .ico{font-size:24px;margin-bottom:6px}
+.spec-card h4{font-size:14px;color:var(--gold);margin-bottom:2px}
+.spec-card p{font-size:11px;color:var(--text-dim);line-height:1.4}
 
 /* LOCATION */
-.loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:35px;max-width:1200px;margin:0 auto}
-.map-wrap{border-radius:12px;overflow:hidden;border:1px solid var(--glass-b);height:420px}
+.loc-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:600px;margin:0 auto}
+.map-wrap{border-radius:10px;overflow:hidden;border:1px solid var(--glass-b);height:250px}
 .map-wrap iframe{width:100%;height:100%;border:none}
-.loc-cards{display:flex;flex-direction:column;gap:16px;justify-content:center}
-.loc-card{display:flex;align-items:flex-start;gap:16px;padding:20px;background:var(--glass);border:1px solid var(--glass-b);border-radius:8px;transition:all .3s}
-.loc-card:hover{border-color:var(--gold);transform:translateX(5px)}
-.loc-ico{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
-.loc-card p{font-size:14px;line-height:1.7}
-
-/* GALLERY - CINEMATIC */
-.gallery-wrap{max-width:1400px;margin:0 auto 50px}
-.gallery-hero{position:relative;width:100%;height:70vh;min-height:500px;max-height:800px;border-radius:16px;overflow:hidden;background:#000}
-.gallery-hero img,.gallery-hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease-in-out}
-.gallery-hero img.on,.gallery-hero video.on{opacity:1}
-.gallery-hero .arrow-btn{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;background:rgba(0,0,0,.6);border:1px solid var(--gold);color:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;font-size:18px;transition:all .3s;backdrop-filter:blur(10px)}
-.gallery-hero .arrow-btn:hover{background:var(--gold);color:var(--dark)}
-.gallery-hero .arr-l{left:20px}
-.gallery-hero .arr-r{right:20px}
-.gallery-hero .counter{position:absolute;bottom:20px;right:20px;background:rgba(0,0,0,.6);color:var(--gold);padding:6px 14px;border-radius:20px;font-size:12px;letter-spacing:2px;z-index:3;backdrop-filter:blur(10px)}
-.thumbstrip{display:flex;gap:10px;margin-top:12px;justify-content:center;overflow-x:auto;padding:4px 0}
-.thumbstrip img{width:90px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;opacity:.4;transition:all .3s;flex-shrink:0}
-.thumbstrip img.on{border-color:var(--gold);opacity:1}
-.acabados{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:1000px;margin:0 auto}
-.acabado{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--glass);border:1px solid var(--glass-b);border-radius:8px;transition:all .3s}
-.acabado:hover{border-color:var(--gold);transform:translateX(5px)}
-.acabado .chk{color:var(--gold);font-size:16px;flex-shrink:0}
-
-/* ROOFTOP FULL */
-.roof-feat{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:30px auto 0}
-.rf{display:flex;align-items:center;gap:14px;padding:18px 22px;background:rgba(0,0,0,.55);border:1px solid var(--glass-b);border-radius:8px;backdrop-filter:blur(15px);transition:all .3s}
-.rf:hover{border-color:var(--gold);background:rgba(197,165,114,.08)}
-.rf-ico{width:42px;height:42px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.loc-pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.loc-pill{padding:10px 16px;background:var(--glass);border:1px solid var(--glass-b);border-radius:20px;font-size:12px;color:var(--text);transition:all .3s}
+.loc-pill strong{color:var(--gold)}
 
 /* UNIT TYPES */
-.tabs{display:flex;justify-content:center;gap:20px;margin-bottom:50px}
-.tab{padding:14px 45px;border:2px solid var(--glass-b);background:transparent;color:var(--text);font-family:'Playfair Display',serif;font-size:18px;cursor:pointer;border-radius:6px;transition:all .3s;letter-spacing:3px}
+.tabs{display:flex;justify-content:center;gap:12px;margin-bottom:30px}
+.tab{padding:10px 30px;border:2px solid var(--glass-b);background:transparent;color:var(--text);font-family:'Playfair Display',serif;font-size:15px;cursor:pointer;border-radius:6px;transition:all .3s;letter-spacing:2px}
 .tab.on,.tab:hover{border-color:var(--gold);color:var(--gold);background:rgba(197,165,114,.08)}
 .tc{display:none}.tc.on{display:block}
-.tl{display:flex;gap:50px;align-items:center;max-width:1100px;margin:0 auto}
-.tl-plan{flex:1;border-radius:12px;overflow:hidden;border:1px solid var(--glass-b)}
-.tl-plan img{width:100%;display:block}
-.tl-info{flex:1}
-.tl-info h3{font-size:34px;color:var(--gold);margin-bottom:6px}
-.tl-info .conf{font-size:15px;color:var(--text-dim);letter-spacing:2px;margin-bottom:30px}
-.ac{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;background:var(--glass);border:1px solid var(--glass-b);border-radius:8px;margin-bottom:12px;transition:border-color .3s}
-.ac:hover{border-color:var(--gold)}
-.ac .lb{font-size:13px;color:var(--text-dim)}
-.ac .vl{font-family:'Playfair Display',serif;font-size:22px;color:var(--gold)}
-.ac .sm{font-size:11px;color:var(--text-dim);margin-left:6px}
+.unit-layout{max-width:500px;margin:0 auto}
+.unit-layout img{width:100%;border-radius:10px;border:1px solid var(--glass-b);margin-bottom:16px}
+.unit-layout h3{font-size:22px;color:var(--gold);margin-bottom:4px;text-align:center}
+.unit-layout .conf{font-size:12px;color:var(--text-dim);text-align:center;margin-bottom:16px}
+.ac{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--glass);border:1px solid var(--glass-b);border-radius:6px;margin-bottom:8px}
+.ac .lb{font-size:12px;color:var(--text-dim)}
+.ac .vl{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold)}
+.ac .sm{font-size:10px;color:var(--text-dim);margin-left:4px}
 
-/* PRICING BUILDING */
-.bldg{max-width:950px;margin:40px auto 0}
-.roof-bar{background:linear-gradient(135deg,var(--gold),var(--gold-dark));text-align:center;padding:16px;border-radius:10px 10px 0 0;font-family:'Playfair Display',serif;font-size:15px;color:var(--dark);letter-spacing:4px}
-.flr{display:grid;grid-template-columns:70px 1fr 1fr;margin-bottom:2px}
-.flr-lbl{display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:18px;color:var(--gold)}
-.uc{padding:18px 20px;background:var(--glass);border:1px solid var(--glass-b);display:flex;justify-content:space-between;align-items:center;margin:0 1px;transition:all .4s;cursor:pointer}
-.uc:hover{background:rgba(197,165,114,.1);border-color:var(--gold);transform:scale(1.01)}
+/* PRICING */
+.bldg{max-width:500px;margin:20px auto 0}
+.roof-bar{background:linear-gradient(135deg,var(--gold),var(--gold-dark));text-align:center;padding:12px;border-radius:8px 8px 0 0;font-family:'Playfair Display',serif;font-size:13px;color:var(--dark);letter-spacing:3px}
+.flr{display:grid;grid-template-columns:1fr;gap:2px;margin-bottom:2px}
+.flr-lbl{padding:6px;font-family:'Playfair Display',serif;font-size:14px;color:var(--gold);text-align:center;border-bottom:1px solid rgba(197,165,114,.15)}
+.uc{padding:12px 14px;background:var(--glass);border:1px solid var(--glass-b);display:flex;justify-content:space-between;align-items:center;transition:all .3s}
+.uc:hover{background:rgba(197,165,114,.08);border-color:var(--gold)}
 .uc.rsv{opacity:.35}
-.uc-name{font-family:'Playfair Display',serif;font-size:18px;color:var(--white);font-weight:600}
-.uc-det{font-size:11px;color:var(--text-dim);margin-top:2px}
-.uc-price{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold);font-weight:600;white-space:nowrap}
-.badge{display:inline-block;padding:4px 12px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+.uc-name{font-family:'Playfair Display',serif;font-size:15px;color:var(--white);font-weight:600}
+.uc-det{font-size:10px;color:var(--text-dim);margin-top:1px}
+.uc-price{font-family:'Playfair Display',serif;font-size:14px;color:var(--gold);font-weight:600;white-space:nowrap}
+.badge{display:inline-block;padding:3px 8px;border-radius:10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
 .badge-g{background:rgba(197,165,114,.2);color:var(--gold)}
 .badge-o{background:rgba(200,100,100,.2);color:#ff9999}
-.ground-bar{background:var(--glass-b);text-align:center;padding:12px;border-radius:0 0 10px 10px;font-family:'Playfair Display',serif;font-size:12px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase}
+.ground-bar{background:var(--glass-b);text-align:center;padding:10px;border-radius:0 0 8px 8px;font-size:11px;color:var(--text-dim);letter-spacing:2px}
 
 /* PAYMENT */
-.tl-wrap{max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:0}
-.ti{display:flex;align-items:flex-start;gap:30px;padding:30px 35px;border-left:2px solid var(--gold);transition:all .3s;position:relative}
-.ti:hover{background:rgba(197,165,114,.05);border-left-color:var(--gold-light)}
-.ti-dot{width:45px;height:45px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--dark)}
-.ti-c{flex:1}
-.ti-amt{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);font-weight:600}
-.ti-desc{font-size:13px;color:var(--text-dim);margin-top:6px;line-height:1.5}
+.pay-steps{max-width:500px;margin:0 auto}
+.pay-step{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--glass-b)}
+.pay-dot{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--dark)}
+.pay-amt{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold)}
+.pay-desc{font-size:11px;color:var(--text-dim);margin-top:2px}
 
-/* SPECS */
-.specs-g{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;max-width:1100px;margin:0 auto}
-.spc{display:flex;flex-direction:column;align-items:center;padding:30px;background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;text-align:center;backdrop-filter:blur(10px);transition:all .3s}
-.spc:hover{border-color:var(--gold);transform:translateY(-8px);box-shadow:0 20px 40px rgba(197,165,114,.1)}
-.spc-ico{font-size:48px;margin-bottom:15px}
-.spc h4{font-size:16px;color:var(--gold);margin-bottom:8px}
-.spc p{font-size:13px;color:var(--text-dim);line-height:1.6}
+/* GALLERY - swipe */
+.gallery{max-width:600px;margin:0 auto;position:relative;border-radius:10px;overflow:hidden;aspect-ratio:16/10;background:#000}
+.gallery img,.gallery video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s}
+.gallery img.on,.gallery video.on{opacity:1}
+.gallery .arr{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;background:rgba(0,0,0,.6);border:1px solid var(--gold);color:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;font-size:14px}
+.gallery .arr-l{left:8px}
+.gallery .arr-r{right:8px}
+.gallery .cnt{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:var(--gold);padding:4px 10px;border-radius:14px;font-size:10px;z-index:3}
 
-/* FAQ CARDS */
-.faq-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1200px;margin:0 auto 40px}
-.faq-card{position:relative;height:280px;border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid var(--glass-b);background:#000;z-index:1;transition:border-color .3s,box-shadow .3s}
-.faq-card:hover{border-color:var(--gold);box-shadow:0 15px 40px rgba(197,165,114,.2)}
-.faq-card-bg{position:absolute;inset:0;background-size:cover;background-position:center;object-fit:cover}
-.faq-card-overlay{position:absolute;inset:0;background:linear-gradient(transparent 10%,rgba(0,0,0,.9) 60%);z-index:1}
-.faq-card-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;z-index:2;transition:transform .4s}
-.faq-card:hover .faq-card-content{transform:translateY(-8px)}
-.faq-card-ico{font-size:32px;margin-bottom:8px}
-.faq-card h4{font-size:18px;margin-bottom:4px;color:var(--gold)}
-.faq-brief{font-size:12px;color:var(--text-dim);margin-bottom:0;max-height:18px;overflow:hidden;transition:max-height .4s}
-.faq-detail-text{opacity:0;transition:opacity .4s;margin-top:8px;border-top:1px solid rgba(197,165,114,.3);padding-top:8px}
-.faq-card:hover .faq-detail-text{opacity:1}
-.faq-detail-text p{font-size:12px;color:var(--text);line-height:1.5;margin-bottom:8px}
-.faq-tag{display:inline-block;background:rgba(197,165,114,.2);color:var(--gold);padding:3px 8px;border-radius:4px;font-size:10px;letter-spacing:1px}
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:1fr;gap:20px;max-width:500px;margin:0 auto}
+.team-col{background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;padding:24px 20px;text-align:center}
+.team-col-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.team-logos{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}
+.team-logos img{height:40px;opacity:.85}
+.team-photo{margin-top:24px;border-radius:10px;overflow:hidden;border:1px solid rgba(197,165,114,.2);max-width:500px;margin-left:auto;margin-right:auto}
+.team-photo img{width:100%;display:block}
 
-/* FAQ CARD FULLSCREEN EXPAND */
-.faq-card-expanded-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9998;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.22,1,.36,1)}
-.faq-card-expanded-overlay.active{opacity:1}
-.faq-card-expanded-overlay.interactive{pointer-events:auto}
-.faq-card.expanding{position:fixed!important;z-index:9999!important;border-radius:16px;border-color:var(--gold)!important;box-shadow:0 40px 100px rgba(0,0,0,.9),0 0 80px rgba(197,165,114,.25)!important;opacity:1!important;transform:none!important;transition:top .6s cubic-bezier(.22,1,.36,1),left .6s cubic-bezier(.22,1,.36,1),width .6s cubic-bezier(.22,1,.36,1),height .6s cubic-bezier(.22,1,.36,1),border-radius .6s}
-.faq-card.expanding .faq-card-overlay{background:linear-gradient(transparent 40%,rgba(0,0,0,.8) 75%)}
-.faq-card.expanding .faq-card-content{transform:translateY(-8px)}
-.faq-card.expanding .faq-detail-text{opacity:1}
-.faq-card.expanding h4{font-size:28px}
-.faq-card.expanding .faq-brief{font-size:16px;max-height:30px}
-.faq-card.expanding .faq-detail-text p{font-size:16px}
-.faq-card.expanding .faq-tag{font-size:13px;padding:5px 12px}
-.faq-card.expanding .faq-card-content{padding:48px}
-.faq-source{text-align:center;font-size:12px;color:var(--text-dim);padding:30px;border-top:1px solid var(--glass-b)}
+/* DOWNLOADS */
+.dl-grid{display:grid;grid-template-columns:1fr;gap:12px;max-width:500px;margin:20px auto}
+.dl-card{display:flex;align-items:center;gap:14px;padding:16px;background:var(--glass);border:1px solid var(--glass-b);border-radius:10px;transition:all .3s;text-decoration:none;color:var(--text)}
+.dl-card:hover{border-color:var(--gold)}
+.dl-ico{font-size:28px;flex-shrink:0}
+.dl-title{font-family:'Playfair Display',serif;font-size:14px;color:var(--white)}
+.dl-desc{font-size:10px;color:var(--text-dim)}
+.dl-btn{margin-left:auto;padding:8px 14px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;border-radius:5px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;text-decoration:none}
 
-/* DOWNLOAD CARDS */
-.dl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:50px auto 40px}
-.dl-card{display:flex;flex-direction:column;padding:28px;background:var(--glass);border:1.5px solid var(--glass-b);border-radius:12px;backdrop-filter:blur(15px);transition:all .4s;text-align:center;cursor:pointer;position:relative;overflow:hidden}
-.dl-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(197,165,114,.1),transparent);opacity:0;transition:opacity .4s}
-.dl-card:hover{border-color:var(--gold);background:var(--glass);box-shadow:0 15px 40px rgba(197,165,114,.15);transform:translateY(-6px)}
-.dl-card:hover::before{opacity:1}
-.dl-card:hover .dl-ico{transform:scale(1.1);color:var(--gold-light)}
-.dl-ico{font-size:44px;margin-bottom:16px;transition:all .3s;color:var(--gold)}
-.dl-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--white);margin-bottom:6px;font-weight:600}
-.dl-desc{font-size:12px;color:var(--text-dim);margin-bottom:20px;line-height:1.4}
-.dl-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;border-radius:6px;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;position:relative;z-index:1}
-.dl-btn:hover{transform:scale(1.05);box-shadow:0 8px 20px rgba(197,165,114,.3)}
-.dl-note{text-align:center;color:var(--text-dim);font-size:12px;margin-top:30px;padding:20px;background:rgba(197,165,114,.05);border-radius:8px;border:1px dashed var(--glass-b)}
-.dl-note a{color:var(--gold);text-decoration:none}
-.dl-note a:hover{text-decoration:underline}
-
-/* CTA CARDS */
-.cta-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:600px;margin:50px auto;padding:0 20px}
-.cc{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;background:var(--glass);border:1px solid var(--glass-b);border-radius:10px;text-decoration:none;transition:all .3s;backdrop-filter:blur(10px)}
-.cc:hover{border-color:var(--gold);background:rgba(197,165,114,.1);transform:translateY(-4px)}
-.cc-ico{font-size:42px;margin-bottom:12px}
-.cc-lbl{font-size:11px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
-.cc-val{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);font-weight:600}
-.wa-btn{display:inline-flex;align-items:center;justify-content:center;padding:18px 45px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;border-radius:8px;font-size:16px;font-weight:600;letter-spacing:2px;cursor:pointer;transition:all .3s;text-decoration:none;margin-top:20px}
-.wa-btn:hover{transform:scale(1.05);box-shadow:0 15px 40px rgba(197,165,114,.3)}
-.foot-logos{display:flex;justify-content:center;gap:40px;align-items:center;margin-top:40px;padding-top:30px;border-top:1px solid var(--glass-b)}
-.foot-logos img{height:40px;opacity:.8;transition:opacity .3s}
-.foot-logos img:hover{opacity:1}
+/* CTA */
+.cta-box{max-width:500px;margin:0 auto;text-align:center;padding:30px;background:var(--glass);border:1px solid var(--glass-b);border-radius:12px}
+.cta-box a{color:var(--gold);text-decoration:none;font-size:20px;font-weight:600;letter-spacing:2px}
 
 /* VIDEO MODAL */
-#vmodal{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .3s}
-#vmodal.show{opacity:1;visibility:visible}
-#vmodal video{max-width:90vw;max-height:90vh;border-radius:12px}
+#vmodal{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:10000;display:none;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(20px)}
+#vmodal.show{display:flex}
+#vmodal video{max-width:95vw;max-height:90vh;border-radius:12px}
 
-/* RESPONSIVE */
-@media(max-width:1024px){
-  .net-grid{flex-direction:column}
-  .net-map{flex:0 0 auto;width:100%}
-  .specs-g{grid-template-columns:repeat(2,1fr)}
-  .faq-cards{grid-template-columns:repeat(2,1fr)}
-  .dl-grid{grid-template-columns:repeat(2,1fr)}
-  .cta-cards{grid-template-columns:1fr}
-  .loc-grid{grid-template-columns:1fr}
-}
-@media(max-width:768px){
-  .proj-showcase{grid-template-columns:1fr;min-height:auto}
-  .proj-preview{height:300px}
-  .split-sec{flex-direction:column}
-  .split-txt{padding:50px 40px}
-  .stats{grid-template-columns:1fr;max-width:400px;margin:0 auto}
-  .topnav{padding:15px 20px}
-  .topnav .links{gap:15px;font-size:9px}
-  .specs-g{grid-template-columns:1fr}
-  .faq-cards{grid-template-columns:1fr}
-  .dl-grid{grid-template-columns:1fr}
-  .tabs{flex-wrap:wrap;gap:10px}
-  .tl{flex-direction:column;gap:30px}
-  .roof-feat{grid-template-columns:1fr}
-  .sec{padding:80px 4%}
-  .flr{grid-template-columns:1fr!important;gap:2px}
-  .flr-lbl{padding:8px;font-size:14px;border-bottom:1px solid rgba(197,165,114,.2)}
-  .uc{flex-direction:column;align-items:flex-start;gap:8px;padding:14px 16px}
-  .uc>div:last-child{width:100%;display:flex;justify-content:space-between;align-items:center}
-  .uc-price{font-size:16px!important}
-  .uc-name{font-size:16px}
-  .roof-bar,.ground-bar{font-size:11px!important;padding:10px!important;letter-spacing:2px!important}
-  .bldg{margin:20px auto 0}
-}
+/* TEVA AI CHAT - THE STAR */
+#tevaChatBtn{position:fixed;bottom:20px;right:16px;z-index:9990;cursor:pointer;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1a8f3c,#22c55e);padding:10px 18px 10px 10px;border-radius:50px;border:2px solid rgba(255,255,255,.2);box-shadow:0 8px 32px rgba(34,197,94,.4);transition:all .3s;animation:tevaPulse 3s infinite}
+#tevaChatBtn:hover{transform:scale(1.05)}
+#tevaChatBtn img{width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,255,255,.3);object-fit:cover}
+#tevaChatBtn span{color:#fff;font-weight:600;font-size:14px;line-height:1.2;text-shadow:0 1px 4px rgba(0,0,0,.3)}
+#tevaChatBtn .teva-sub{display:block;font-size:9px;font-weight:400;opacity:.85;letter-spacing:.5px}
+@keyframes tevaPulse{0%,100%{box-shadow:0 8px 32px rgba(34,197,94,.4)}50%{box-shadow:0 8px 32px rgba(34,197,94,.7),0 0 60px rgba(34,197,94,.2)}}
 
-/* TEVA AI CHAT WIDGET */
-#tevaChatBtn{position:fixed;bottom:28px;right:28px;z-index:9990;cursor:pointer;display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#1a8f3c,#22c55e);padding:10px 22px 10px 10px;border-radius:50px;border:2px solid rgba(255,255,255,.2);box-shadow:0 8px 32px rgba(34,197,94,.4);transition:all .3s;animation:tevaPulse 3s infinite}
-#tevaChatBtn:hover{transform:scale(1.05);box-shadow:0 12px 40px rgba(34,197,94,.6)}
-#tevaChatBtn img{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.5);object-fit:cover}
-#tevaChatBtn span{color:#fff;font-weight:600;font-size:14px;letter-spacing:.5px;line-height:1.2}
-#tevaChatBtn .teva-sub{font-size:10px;font-weight:400;opacity:.85;display:block}
-@keyframes tevaPulse{0%,100%{box-shadow:0 8px 32px rgba(34,197,94,.4)}50%{box-shadow:0 8px 32px rgba(34,197,94,.7),0 0 0 8px rgba(34,197,94,.1)}}
-
-#tevaChat{position:fixed;bottom:28px;right:28px;z-index:9991;width:400px;height:580px;display:none;flex-direction:column;border-radius:20px;overflow:hidden;border:1px solid rgba(197,165,114,.3);box-shadow:0 20px 60px rgba(0,0,0,.5);animation:tevaSlideUp .3s ease}
-@keyframes tevaSlideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-#tevaChat .tc-head{background:linear-gradient(135deg,#0a0a0a,#1a1a1a);padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(197,165,114,.2)}
-#tevaChat .tc-head img{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);object-fit:cover}
-#tevaChat .tc-head-info h4{color:var(--gold);font-size:14px;margin:0;letter-spacing:1px}
-#tevaChat .tc-head-info p{color:var(--text-dim);font-size:10px;margin:2px 0 0;letter-spacing:.5px}
-#tevaChat .tc-close{margin-left:auto;color:var(--text-dim);font-size:24px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .3s}
-#tevaChat .tc-close:hover{background:rgba(255,255,255,.1);color:#fff}
-#tevaChat .tc-msgs{flex:1;overflow-y:auto;padding:16px;background:#0d0d0d;display:flex;flex-direction:column;gap:12px}
-#tevaChat .tc-msgs::-webkit-scrollbar{width:4px}
-#tevaChat .tc-msgs::-webkit-scrollbar-thumb{background:rgba(197,165,114,.3);border-radius:4px}
-.tc-msg{max-width:85%;padding:12px 16px;border-radius:16px;font-size:13px;line-height:1.6;animation:tevaFadeIn .3s ease}
-@keyframes tevaFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.tc-msg.bot{background:rgba(197,165,114,.1);border:1px solid rgba(197,165,114,.15);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px}
-.tc-msg.user{background:linear-gradient(135deg,#1a8f3c,#22c55e);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
-.tc-msg.bot strong{color:var(--gold)}
-.tc-typing{display:flex;gap:4px;padding:12px 16px;align-self:flex-start}
-.tc-typing span{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:typDot .6s infinite alternate}
+#tevaChat{display:none;flex-direction:column;position:fixed;bottom:12px;right:12px;width:calc(100vw - 24px);height:calc(100vh - 80px);max-width:420px;max-height:700px;background:linear-gradient(180deg,#0c0c0c,#111);border:1px solid var(--glass-b);border-radius:16px;z-index:9999;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.8)}
+.tc-head{display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(0,0,0,.5);border-bottom:1px solid var(--glass-b)}
+.tc-head img{width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);object-fit:cover}
+.tc-head-info h4{font-size:13px;color:var(--gold);margin:0}
+.tc-head-info p{font-size:9px;color:var(--text-dim);margin:0}
+.tc-voice-toggle{background:rgba(197,165,114,.15);border:1px solid var(--gold);color:var(--gold);padding:4px 10px;border-radius:14px;cursor:pointer;font-size:10px;margin-left:auto;transition:all .3s}
+.tc-voice-toggle.on{background:rgba(197,165,114,.3)}
+.tc-close{color:var(--text-dim);font-size:24px;cursor:pointer;padding:0 6px;margin-left:6px}
+.tc-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.tc-msg{max-width:85%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.5;word-wrap:break-word}
+.tc-msg.bot{background:rgba(197,165,114,.1);border:1px solid rgba(197,165,114,.2);border-radius:12px 12px 12px 2px;align-self:flex-start}
+.tc-msg.user{background:rgba(255,255,255,.08);border-radius:12px 12px 2px 12px;align-self:flex-end;color:var(--text)}
+.tc-msg.bot.speaking{border-color:var(--gold);box-shadow:0 0 15px rgba(197,165,114,.2)}
+.tc-msg a{color:var(--gold)}
+.tc-msg img.tc-img{max-width:100%;border-radius:8px;margin:6px 0}
+.tc-typing{display:flex;gap:4px;padding:10px;align-self:flex-start}
+.tc-typing span{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:typDot 1.4s infinite}
 .tc-typing span:nth-child(2){animation-delay:.2s}
 .tc-typing span:nth-child(3){animation-delay:.4s}
-@keyframes typDot{from{opacity:.3;transform:translateY(0)}to{opacity:1;transform:translateY(-4px)}}
-#tevaChat .tc-input{display:flex;gap:8px;padding:12px 16px;background:#0a0a0a;border-top:1px solid rgba(197,165,114,.15)}
-#tevaChat .tc-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(197,165,114,.2);border-radius:24px;padding:10px 18px;color:#fff;font-size:13px;outline:none;transition:border-color .3s}
-#tevaChat .tc-input input:focus{border-color:var(--gold)}
-#tevaChat .tc-input input::placeholder{color:rgba(255,255,255,.3)}
-#tevaChat .tc-input button{background:linear-gradient(135deg,#1a8f3c,#22c55e);border:none;color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:16px;transition:all .3s;display:flex;align-items:center;justify-content:center}
-#tevaChat .tc-input button:hover{transform:scale(1.1)}
-#tevaChat .tc-input button:disabled{opacity:.4;cursor:default;transform:none}
-.tc-attach{color:var(--text-dim);cursor:pointer;display:flex;align-items:center;padding:8px;border-radius:50%;transition:all .3s}
-.tc-attach:hover{color:var(--gold);background:rgba(197,165,114,.1)}
-.tc-msg img.tc-img{max-width:100%;border-radius:8px;margin-top:8px;cursor:pointer}
-.tc-img-preview{display:flex;align-items:center;gap:8px;padding:6px 12px;background:rgba(197,165,114,.1);border-radius:8px;margin-bottom:8px;font-size:11px;color:var(--gold)}
+@keyframes typDot{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.tc-img-preview{display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(197,165,114,.1);border-top:1px solid var(--glass-b)}
 .tc-img-preview img{width:40px;height:40px;object-fit:cover;border-radius:6px}
-.tc-img-preview .tc-img-remove{cursor:pointer;margin-left:auto;opacity:.6}
-.tc-img-preview .tc-img-remove:hover{opacity:1}
-.tc-mic{color:var(--text-dim);cursor:pointer;display:flex;align-items:center;padding:8px;border-radius:50%;transition:all .3s;border:none;background:none}
-.tc-mic:hover{color:var(--gold);background:rgba(197,165,114,.1)}
-.tc-mic.recording{color:#ff4444;animation:micPulse 1s infinite}
+.tc-img-preview .tc-img-remove{cursor:pointer;color:var(--text-dim);margin-left:auto}
+.tc-input{display:flex;align-items:center;gap:6px;padding:8px 10px;border-top:1px solid var(--glass-b);background:rgba(0,0,0,.3)}
+.tc-input input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:10px 14px;color:var(--text);font-size:13px;outline:none}
+.tc-input input:focus{border-color:var(--gold)}
+.tc-input button,.tc-attach,.tc-mic{background:none;border:none;color:var(--gold);cursor:pointer;padding:6px;font-size:16px;display:flex;align-items:center;justify-content:center}
+.tc-mic.recording{color:#ef4444;animation:micPulse 1s infinite}
 @keyframes micPulse{0%,100%{opacity:1}50%{opacity:.4}}
-.tc-voice-toggle{display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:12px;font-size:9px;letter-spacing:1px;cursor:pointer;transition:all .3s;border:1px solid rgba(197,165,114,.2);color:var(--text-dim);background:none;margin-left:auto}
-.tc-voice-toggle.on{border-color:var(--gold);color:var(--gold);background:rgba(197,165,114,.1)}
-.tc-msg.bot.speaking{border-color:var(--gold);box-shadow:0 0 12px rgba(197,165,114,.2)}
-@media(max-width:480px){#tevaChat{width:calc(100vw - 16px);height:calc(100vh - 80px);bottom:8px;right:8px;border-radius:16px}#tevaChatBtn{bottom:16px;right:16px}}
+#tevaSendBtn{font-size:18px}
+
+/* MOBILE-FIRST: already mobile. Desktop adjustments */
+@media(min-width:768px){
+  .hero{height:80vh}
+  .hero-c img{width:260px}
+  .specs-row{grid-template-columns:repeat(4,1fr)}
+  .loc-grid{grid-template-columns:1fr 1fr;max-width:900px}
+  .map-wrap{height:350px}
+  .unit-layout{max-width:800px}
+  .unit-layout .unit-flex{display:flex;gap:30px;align-items:flex-start}
+  .unit-layout .unit-flex>*{flex:1}
+  .bldg{max-width:700px}
+  .flr{grid-template-columns:50px 1fr 1fr}
+  .gallery{max-width:900px;aspect-ratio:16/9}
+  .team-grid{grid-template-columns:1fr 1fr;max-width:800px}
+  .dl-grid{grid-template-columns:1fr 1fr;max-width:700px}
+  .sec{padding:80px 6%}
+  #tevaChat{width:400px;height:600px;bottom:20px;right:20px}
+  .topnav{padding:16px 30px}
+  .topnav .links{gap:22px}
+  .topnav .links a{font-size:11px}
+}
 </style>
 </head>
 <body>
 
-<div id="loader">
-  <div class="ring"></div>
-  <div class="ring"></div>
-  <div class="brand">TEVA</div>
-  <small>Cargando...</small>
-</div>
-
-<div id="topnav" class="topnav">
-  <img src="img/logo_global_v2.png" alt="Global Real Estate" style="height:32px">
+<!-- NAV -->
+<nav class="topnav" id="topnav">
+  <img src="img/logo_global_v2.png" alt="Global Real Estate">
   <div class="links">
-    <a href="#hero">Inicio</a>
-    <a href="#oportunidad">Oportunidad</a>
-    <a href="#ubicacion">Ubicación</a>
     <a href="#proyecto">Proyecto</a>
-    <a href="#tipos">Unidades</a>
+    <a href="#ubicacion">Ubicación</a>
+    <a href="#unidades">Unidades</a>
     <a href="#precios">Precios</a>
-    <a href="#descargas">Material</a>
+    <a href="#material">Material</a>
     <a href="#contacto">Contacto</a>
   </div>
-</div>
-
-<div id="dots" class="dots"></div>
+</nav>
 
 <!-- 1. HERO -->
 <section class="hero" id="hero">
-  <div id="particles"></div>
-  <video autoplay muted loop playsinline poster="img/hero.jpg" style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;transform:translate(-50%,-50%);object-fit:cover;">
-    <source src="vid/promo.mp4" type="video/mp4">
-  </video>
-  <div class="overlay"></div>
+  <div class="bg"></div>
   <div class="hero-c">
-    <div style="font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);color:#fff;letter-spacing:4px;margin-bottom:60px;opacity:0" class="hero-welcome">Bienvenido, amigo colega!</div>
-    <img src="img/logo_global_v2.png" alt="Global Real Estate" style="max-width:340px;margin-bottom:40px">
-    <div class="tag" style="margin-bottom:20px">TEVA by AURORA</div>
-    <div class="line" style="margin:24px auto"></div>
-    <div class="loc" style="margin-bottom:14px">La Paz, B.C.S.</div>
-    <div class="sub">La Joya del Malecón</div>
+    <div class="welcome">Bienvenido, amigo colega!</div>
+    <img src="img/logo_global_v2.png" alt="Global Real Estate">
+    <div class="tag">TEVA by AURORA</div>
+    <div class="loc">La Paz, B.C.S. — La Joya del Malecón</div>
   </div>
-  <div class="scroll-arrow"><span>Desliza</span><i></i></div>
 </section>
 
-<!-- VIDEO PROMO -->
-<section class="sec sec-dark" style="padding:40px 4%;text-align:center">
-  <div class="reveal" style="max-width:900px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid rgba(197,165,114,.2);box-shadow:0 20px 60px rgba(0,0,0,.4);cursor:pointer" onclick="playVideo('vid/hero_promo.mp4')">
-    <div style="position:relative">
-      <video style="width:100%;display:block" preload="metadata" poster="img/terraza_depto_hd.jpg"><source src="vid/hero_promo.mp4" type="video/mp4"></video>
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);transition:background .3s" onmouseenter="this.style.background='rgba(0,0,0,.15)'" onmouseleave="this.style.background='rgba(0,0,0,.3)'">
-        <div style="width:80px;height:80px;border-radius:50%;background:rgba(197,165,114,.9);display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff;padding-left:6px;box-shadow:0 8px 30px rgba(0,0,0,.4)">▶</div>
-      </div>
+<!-- 2. PROYECTO - Quick specs -->
+<section class="sec sec-dark" id="proyecto">
+  <h2 class="stitle">TEVA by AURORA</h2>
+  <p class="ssub">10 Condominios Exclusivos · 6 Pisos + Rooftop</p>
+  <div class="gline"></div>
+  <div class="specs-row">
+    <div class="spec-card"><div class="ico">🏢</div><h4>10 Condominios</h4><p>Exclusividad total</p></div>
+    <div class="spec-card"><div class="ico">🏖️</div><h4>2 del Malecón</h4><p>Cuadras caminando</p></div>
+    <div class="spec-card"><div class="ico">🛗</div><h4>Elevador</h4><p>Diferenciador clave</p></div>
+    <div class="spec-card"><div class="ico">🏊</div><h4>Rooftop</h4><p>Alberca + Jacuzzi + BBQ</p></div>
+    <div class="spec-card"><div class="ico">🛏️</div><h4>2 Recámaras</h4><p>+ 2 Baños + Terraza</p></div>
+    <div class="spec-card"><div class="ico">❄️</div><h4>A/C Incluido</h4><p>3 equipos por unidad</p></div>
+    <div class="spec-card"><div class="ico">🅿️</div><h4>Estacionamiento</h4><p>Planta baja</p></div>
+    <div class="spec-card"><div class="ico">🍳</div><h4>Cocina Equipada</h4><p>Granito + MDF premium</p></div>
+  </div>
+
+  <!-- Gallery -->
+  <div style="margin-top:40px">
+    <div class="gallery" id="gal">
+      <img src="img/hd_building_real2.jpg" alt="TEVA" class="on">
+      <img src="img/terraza_depto_hd.jpg" alt="Terraza" loading="lazy">
+      <img src="img/cocina_comedor_hd.jpg" alt="Cocina" loading="lazy">
+      <video muted loop playsinline preload="none" poster="img/rooftop_teva_poster.jpg"><source src="vid/roof_paneo.mp4" type="video/mp4"></video>
+      <video muted loop playsinline preload="none"><source src="vid/roof_zoom.mp4" type="video/mp4"></video>
+      <img src="img/terraza_vista_hd.jpg" alt="Vista" loading="lazy">
+      <img src="img/hd_ocean.jpg" alt="Mar" loading="lazy">
+      <video muted loop playsinline preload="none"><source src="vid/cocina_paneo.mp4" type="video/mp4"></video>
+      <div class="arr arr-l" onclick="galNav(-1)">‹</div>
+      <div class="arr arr-r" onclick="galNav(1)">›</div>
+      <div class="cnt" id="galCount">1 / 8</div>
     </div>
   </div>
 </section>
 
-<!-- 2. OPORTUNIDAD -->
-<section class="split-sec" id="oportunidad">
-  <div class="split-img">
-    <div class="bg kb kb3" style="background-image:url('img/hd_panoramic.jpg')"></div>
-  </div>
-  <div class="split-txt">
-    <h2 class="reveal">Una Oportunidad Única</h2>
-    <p class="reveal">En La Paz, B.C.S., el mercado inmobiliario está en expansión acelerada. TEVA by AURORA representa la perfecta convergencia de: ubicación premium (a 2 cuadras del icónico Malecón), amenidades de lujo, y retorno de inversión comprobado en la zona.</p>
-    <p class="reveal">Solo 10 propietarios — una comunidad selecta. Lujo discreto y calidad sin compromisos. Exclusividad diseñada para quienes aprecian lo mejor, maximizando tanto la experiencia de vida como el retorno de inversión.</p>
-    <a href="#precios" class="highlight reveal">EXPLORAR PRECIOS</a>
-  </div>
-</section>
-
-<!-- 3. LA PAZ VIDEO DIVIDER -->
-<div id="malecon" style="background:#0a0a0a">
-  <div style="position:relative;height:60vh;overflow:hidden">
-    <video autoplay muted loop playsinline poster="img/hd_beach.jpg" style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;transform:translate(-50%,-50%);object-fit:cover;">
-      <source src="vid/lapaz_loop.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div style="text-align:center;padding:40px 20px 50px">
-    <h2 class="reveal" style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);letter-spacing:4px;color:#fff;margin:0 0 14px">Vive La Paz</h2>
-    <p class="reveal" style="color:var(--gold);font-style:italic;font-size:clamp(14px,1.8vw,20px);font-family:'Playfair Display',serif;margin:0;letter-spacing:1px">A 2 cuadras del Malecón Histórico, rodeada de vida marina, gastronomía y cultura</p>
-  </div>
-</div>
-
-<!-- 4. UBICACIÓN -->
-<section class="sec sec-dark" id="ubicacion">
-  <div style="max-width:1200px;margin:0 auto">
-    <h2 class="stitle reveal" style="font-size:clamp(36px,5vw,56px)">Ubicación Privilegiada</h2>
-    <p class="ssub reveal" style="font-size:clamp(16px,2vw,22px)">Calle Revolución, entre Guerrero y República — La Paz, B.C.S.</p>
-    <div class="gline reveal"></div>
-    <div class="loc-grid">
-      <div class="map-wrap reveal">
-        <iframe src="https://maps.google.com/maps?q=24.1686462,-110.3073961&t=&z=17&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-      <div class="loc-cards">
-        <div style="display:flex;align-items:center;gap:14px;padding:20px 28px;background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;flex:1;min-width:220px;transition:all .3s" class="reveal"><span style="font-size:28px;color:var(--gold)">◆</span><div><strong style="color:var(--gold);font-size:clamp(22px,3vw,32px)">2 min</strong><br><span style="font-size:16px;color:var(--text)">Malecón Histórico</span></div></div>
-        <div style="display:flex;align-items:center;gap:14px;padding:20px 28px;background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;flex:1;min-width:220px;transition:all .3s" class="reveal"><span style="font-size:28px;color:var(--gold)">◆</span><div><strong style="color:var(--gold);font-size:clamp(22px,3vw,32px)">1 min</strong><br><span style="font-size:16px;color:var(--text)">Restaurantes Premium</span></div></div>
-        <div style="display:flex;align-items:center;gap:14px;padding:20px 28px;background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;flex:1;min-width:220px;transition:all .3s" class="reveal"><span style="font-size:28px;color:var(--gold)">◆</span><div><strong style="color:var(--gold);font-size:clamp(22px,3vw,32px)">15 min</strong><br><span style="font-size:16px;color:var(--text)">Aeropuerto Internacional</span></div></div>
-        <div style="display:flex;align-items:center;gap:14px;padding:20px 28px;background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;flex:1;min-width:220px;transition:all .3s" class="reveal"><span style="font-size:28px;color:var(--gold)">◆</span><div><strong style="color:var(--gold);font-size:clamp(22px,3vw,32px)">3 min</strong><br><span style="font-size:16px;color:var(--text)">Marina La Paz</span></div></div>
-        <div style="display:flex;align-items:center;gap:14px;padding:20px 28px;background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;flex:1;min-width:220px;transition:all .3s" class="reveal"><span style="font-size:28px;color:var(--gold)">◆</span><div><strong style="color:var(--gold);font-size:clamp(22px,3vw,32px)">2 min</strong><br><span style="font-size:16px;color:var(--text)">Bancos y Servicios</span></div></div>
-        <div style="display:flex;align-items:center;gap:14px;padding:20px 28px;background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;flex:1;min-width:220px;transition:all .3s" class="reveal"><span style="font-size:28px;color:var(--gold)">◆</span><div><strong style="color:var(--gold);font-size:clamp(22px,3vw,32px)">Directa</strong><br><span style="font-size:16px;color:var(--text)">Conectividad a vías principales y playas</span></div></div>
-      </div>
+<!-- 3. UBICACIÓN -->
+<section class="sec sec-brown" id="ubicacion">
+  <h2 class="stitle">Ubicación Privilegiada</h2>
+  <p class="ssub">Calle Revolución — La Paz, B.C.S.</p>
+  <div class="gline"></div>
+  <div class="loc-grid">
+    <div class="map-wrap">
+      <iframe src="https://maps.google.com/maps?q=24.1686462,-110.3073961&t=&z=17&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div class="loc-pills">
+      <div class="loc-pill"><strong>2 min</strong> Malecón</div>
+      <div class="loc-pill"><strong>1 min</strong> Restaurantes</div>
+      <div class="loc-pill"><strong>15 min</strong> Aeropuerto</div>
+      <div class="loc-pill"><strong>3 min</strong> Marina</div>
+      <div class="loc-pill"><strong>2 min</strong> Bancos</div>
+      <div class="loc-pill"><strong>Directa</strong> Vías principales</div>
     </div>
   </div>
 </section>
 
-<!-- 5. MERCADO -->
-<section class="sec sec-dark" id="mercado" style="position:relative;overflow:hidden">
-  <div class="bg kb kb3" style="position:absolute;inset:-10%;width:120%;height:120%;background:url('img/lapaz.jpg')center/cover;opacity:.12"></div>
-  <div style="position:relative;z-index:2;max-width:1200px;margin:0 auto">
-    <h2 class="stitle reveal">LA PAZ, B.C.S.</h2>
-    <p class="ssub reveal">#1 EN PLUSVALÍA NACIONAL</p>
-    <div class="gline reveal"></div>
-    <div class="stats">
-      <div class="stat reveal"><div class="stat-n" data-t="13" data-s="%">0</div><div class="stat-l">Plusvalía</div></div>
-      <div class="stat reveal"><div class="stat-n" data-t="15" data-s="%">0</div><div class="stat-l">Crecimiento anual de vivienda</div></div>
-      <div class="stat reveal"><div class="stat-n" data-p="$" data-t="683" data-s="M">0</div><div class="stat-l">Inversión extranjera directa</div></div>
-      <div class="stat reveal"><div class="stat-n" data-t="70" data-s="%">0</div><div class="stat-l">Absorción de alquiler</div></div>
-      <div class="stat reveal"><div class="stat-n" data-t="700" data-s="K">0</div><div class="stat-l">Turistas al año</div></div>
-      <div class="stat reveal"><div class="stat-n" data-t="17" data-s="%">0</div><div class="stat-l">Crecimiento anual de turistas</div></div>
-    </div>
-    <p class="reveal" style="text-align:center;margin-top:35px;color:var(--text-dim);font-size:11px;font-style:italic">Fuente: Sociedad Hipotecaria Federal, AirDNA, Secretaría de Economía</p>
-  </div>
-</section>
-
-<!-- 6. REDES -->
-<section class="sec sec-brown" id="redes">
-  <div class="net-grid">
-    <div class="net-map reveal"><img src="img/bcsmap.jpg" alt="BCS"></div>
-    <div class="net-info">
-      <h2 class="stitle reveal" style="text-align:left;font-size:clamp(32px,4vw,52px)">Economía de Redes &amp; Conectividad</h2>
-      <div class="gline reveal" style="margin-left:0"></div>
-      <div class="net-item reveal"><div class="net-icon">%</div><p style="font-size:17px"><strong>40.6%</strong> de TODA la inversión extranjera turística de México se concentra en BCS</p></div>
-      <div class="net-item reveal"><div class="net-icon">◆</div><p style="font-size:17px"><strong>45</strong> destinos internacionales directos</p></div>
-      <div class="net-item reveal"><div class="net-icon">$</div><p style="font-size:17px">Mercado objetivo: Costa oeste de U.S.A., Canadá y Europa (<strong>$10 mil millones USD</strong> estimado total turismo)</p></div>
-      <div class="net-item reveal"><div class="net-icon">↗</div><p style="font-size:17px"><strong>14-16%</strong> crecimiento anual proyectado en Zona Central</p></div>
-      <div class="net-item reveal"><div class="net-icon">◆</div><p style="font-size:17px">La Paz es la <strong>joya emergente del Mar de Cortés</strong></p></div>
-    </div>
-  </div>
-</section>
-
-<!-- 7. PROYECTO -->
-<section class="sec sec-dark" id="proyecto" style="padding:80px 4%">
-  <div style="max-width:1300px;margin:0 auto">
-    <h2 class="stitle reveal" style="font-size:clamp(36px,5vw,60px);letter-spacing:6px">TEVA BY AURORA</h2>
-    <p class="ssub reveal" style="font-family:'Playfair Display',serif;font-size:clamp(16px,2vw,24px);color:var(--gold);font-style:italic;margin-bottom:50px">La Joya del Malecón</p>
-    <div class="gline reveal"></div>
-
-    <div class="proj-showcase reveal" id="projShowcase">
-      <div class="proj-preview" id="projPreview">
-        <img src="img/hd_building_real2.jpg" alt="10 Condominios" class="active" data-idx="0">
-        <video muted loop playsinline preload="metadata" poster="img/rooftop_teva_poster.jpg" data-idx="1"><source src="vid/roof_paneo.mp4" type="video/mp4"></video>
-        <video muted loop playsinline preload="metadata" poster="img/hd_balandra2.jpg" data-idx="2"><source src="vid/caminata_playa.mp4" type="video/mp4"></video>
-        <img src="img/terraza_depto_hd.jpg" alt="Terraza" data-idx="3">
-        <video muted loop playsinline preload="metadata" poster="img/elevador_teva.png" data-idx="4"><source src="vid/elevador.mp4" type="video/mp4"></video>
-        <video muted loop playsinline preload="metadata" poster="img/bodega_teva.jpg" data-idx="5"><source src="vid/bodega_teva.mp4" type="video/mp4"></video>
-        <img src="img/parking_plan.png" alt="Estacionamiento" data-idx="6">
-        <video muted loop playsinline preload="metadata" poster="img/cocina_comedor_hd.jpg" data-idx="7"><source src="vid/cocina_paneo.mp4" type="video/mp4"></video>
-      </div>
-      <div class="proj-feature-list" id="projList">
-        <div class="proj-item active" data-idx="0">
-          <h4>10 Condominios</h4>
-          <div class="proj-item-brief">Exclusividad total</div>
-          <div class="proj-item-desc">Solo 10 unidades de lujo. Privacidad, exclusividad y plusvalía garantizada.</div>
-          <span class="proj-item-num">01</span>
-        </div>
-        <div class="proj-item" data-idx="1">
-          <h4>6 Pisos + Rooftop <span class="vid-badge">Video</span></h4>
-          <div class="proj-item-brief">Vista al mar</div>
-          <div class="proj-item-desc">Roof Top privado con alberca, jacuzzi, BBQ, pergolado y vistas al Mar de Cortés.</div>
-          <span class="proj-item-num">02</span>
-        </div>
-        <div class="proj-item" data-idx="2">
-          <h4>A 2 Cuadras del Malecón <span class="vid-badge">Video</span></h4>
-          <div class="proj-item-brief">Ubicación estratégica</div>
-          <div class="proj-item-desc">Restaurantes, marina, cultura y vida nocturna a 2 minutos caminando.</div>
-          <span class="proj-item-num">03</span>
-        </div>
-        <div class="proj-item" data-idx="3">
-          <h4>2 Recámaras + Terraza</h4>
-          <div class="proj-item-brief">2 Baños completos</div>
-          <div class="proj-item-desc">Amplias recámaras, 2 baños completos y terraza privada con vista.</div>
-          <span class="proj-item-num">04</span>
-        </div>
-        <div class="proj-item" data-idx="4">
-          <h4>Elevador <span class="vid-badge">Video</span></h4>
-          <div class="proj-item-brief">Diferenciador clave</div>
-          <div class="proj-item-desc">Uno de los pocos edificios en La Paz con elevador. Acceso cómodo a todos los pisos.</div>
-          <span class="proj-item-num">05</span>
-        </div>
-        <div class="proj-item" data-idx="5">
-          <h4>Bodega y Áreas Comunes <span class="vid-badge">Video</span></h4>
-          <div class="proj-item-brief">Administración incluida</div>
-          <div class="proj-item-desc">Bodega, lobby de lujo y gestión profesional del condominio incluida.</div>
-          <span class="proj-item-num">06</span>
-        </div>
-        <div class="proj-item" data-idx="6">
-          <h4>Estacionamiento</h4>
-          <div class="proj-item-brief">Planta baja</div>
-          <div class="proj-item-desc">Cajones asignados en planta baja. Acceso seguro y directo al lobby.</div>
-          <span class="proj-item-num">07</span>
-        </div>
-        <div class="proj-item" data-idx="7">
-          <h4>Acabados de Lujo <span class="vid-badge">Video</span></h4>
-          <div class="proj-item-brief">Materiales selectos</div>
-          <div class="proj-item-desc">Granito, aluminio español. Cada detalle pensado para el mercado premium.</div>
-          <span class="proj-item-num">08</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="team-section reveal">
-      <h3>El Equipo Detrás de TEVA</h3>
-      <div class="team-sub">Desarrollo, construcción y comercialización de excelencia</div>
-      <div class="team-grid">
-        <div class="team-col">
-          <div class="team-col-title">Desarrollo & Construcción</div>
-          <div class="team-logos">
-            <div><img src="img/logo_habitat_new.png" alt="Habitat Grupo Constructor" style="height:55px"><div class="logo-label">Constructor</div></div>
-            <div><img src="img/logo_contempo.png" alt="Contempo Real Estate" style="height:50px"><div class="logo-label">Desarrollador</div></div>
-            <div><img src="img/logo_beyond.png" alt="Beyond Spaces" style="height:50px"><div class="logo-label">Diseño</div></div>
-          </div>
-        </div>
-        <div class="team-col">
-          <div class="team-col-title">Marketing & Ventas</div>
-          <div class="team-logos">
-            <div><img src="img/logo_global_v2.png" alt="Global Real Estate" style="height:55px"><div class="logo-label">Comercialización</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="team-photo reveal" id="teamPhoto">
-        <img src="img/equipo_arranque_crop.jpg" alt="Arranque de obra TEVA — Contempo, Beyond Spaces, Habitat y Global Real Estate">
-      </div>
-      <p style="text-align:center;color:var(--text-dim);font-size:12px;margin-top:12px;letter-spacing:1px">Colocación de primera piedra — TEVA by Aurora, La Paz B.C.S.</p>
-      <div class="reveal" style="max-width:800px;margin:30px auto 0;border-radius:14px;overflow:hidden;border:1px solid rgba(197,165,114,.2);box-shadow:0 20px 60px rgba(0,0,0,.4);cursor:pointer;position:relative" onclick="playVideo('vid/promo_audio.mp4')">
-        <video style="width:100%;display:block" preload="metadata" poster="img/hd_building_real2.jpg"><source src="vid/promo_audio.mp4" type="video/mp4"></video>
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);transition:background .3s" onmouseenter="this.style.background='rgba(0,0,0,.15)'" onmouseleave="this.style.background='rgba(0,0,0,.3)'">
-          <div style="width:70px;height:70px;border-radius:50%;background:rgba(197,165,114,.9);display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;padding-left:4px;box-shadow:0 8px 30px rgba(0,0,0,.4)">▶</div>
-        </div>
-      </div>
-      <p style="text-align:center;color:var(--gold);font-size:13px;margin-top:14px;letter-spacing:1.5px">Avance de Obra — Ver video con sonido</p>
-    </div>
-  </div>
-</section>
-
-<!-- 8. AVANCE DE OBRA -->
-<section class="sec sec-dark" id="avance" style="padding:60px 4%">
-  <h2 class="stitle reveal">Avance de Obra</h2>
-  <p class="ssub reveal">Sentamos las bases de un nuevo estilo de vida</p>
-  <div class="gline reveal"></div>
-  <div class="reveal" style="max-width:1200px;margin:0 auto;position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--glass-b);aspect-ratio:16/9;background:#000">
-    <video id="constructionVid" autoplay muted loop playsinline poster="img/hd_building_real.jpg" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer" onclick="toggleConstructionFS(this)">
-      <source src="vid/construction.mp4" type="video/mp4">
-    </video>
-    <div style="position:absolute;bottom:16px;right:16px;display:flex;gap:8px;z-index:5">
-      <div onclick="toggleConstructionMute()" id="conMuteBtn" style="width:44px;height:44px;background:rgba(0,0,0,.7);border:1px solid var(--glass-b);color:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;backdrop-filter:blur(10px);transition:all .3s">M</div>
-      <div onclick="toggleConstructionFS(document.getElementById('constructionVid'))" style="width:44px;height:44px;background:rgba(0,0,0,.7);border:1px solid var(--glass-b);color:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;backdrop-filter:blur(10px);transition:all .3s">⛶</div>
-    </div>
-    <div style="position:absolute;top:16px;left:16px;background:rgba(0,0,0,.7);border:1px solid var(--gold);color:var(--gold);padding:6px 18px;border-radius:20px;font-size:11px;letter-spacing:3px;text-transform:uppercase;z-index:5;backdrop-filter:blur(10px)">EN VIVO</div>
-  </div>
-  <p class="reveal" style="text-align:center;margin-top:16px;font-size:12px;color:var(--text-dim)">Haz clic en el video para pantalla completa &nbsp;·&nbsp; Doble clic para salir</p>
-</section>
-
-<!-- 9. INTERIORES -->
-<section class="sec sec-brown" id="interiores">
-  <h2 class="stitle reveal">Acabados que Marcan la Diferencia</h2>
-  <p class="ssub reveal">Lujo en cada detalle</p>
-  <div class="gline reveal"></div>
-  <div class="gallery-wrap reveal">
-    <div class="gallery-hero" id="galHero">
-      <img src="img/terraza_depto_hd.jpg" alt="Terraza Vista al Mar" class="on">
-      <img src="img/cocina_comedor_hd.jpg" alt="Cocina Comedor y Sala">
-      <video muted loop playsinline preload="metadata" src="vid/roof_zoom.mp4"></video>
-      <img src="img/hd_ocean.jpg" alt="Mar de Cortés">
-      <img src="img/terraza_vista_hd.jpg" alt="Terraza con Vista">
-      <video muted loop playsinline preload="metadata" src="vid/caminata_playa.mp4"></video>
-      <video muted loop playsinline preload="metadata" src="vid/roof_paneo.mp4"></video>
-      <img src="img/hd_balandra2.jpg" alt="Malecón La Paz">
-      <video muted loop playsinline preload="metadata" src="vid/cocina_paneo.mp4"></video>
-      <img src="img/hd_building_real2.jpg" alt="Edificio TEVA">
-      <img src="img/floorplan_type1.jpg" alt="Floor Plan">
-      <div class="arrow-btn arr-l" onclick="galNav(-1)">‹</div>
-      <div class="arrow-btn arr-r" onclick="galNav(1)">›</div>
-      <div class="counter" id="galCount">1 / 11</div>
-    </div>
-    <div class="thumbstrip" id="thumbs">
-      <img src="img/terraza_depto_hd.jpg" class="on" onclick="galGo(0)">
-      <img src="img/cocina_comedor_hd.jpg" onclick="galGo(1)">
-      <img src="img/rooftop_teva_poster.jpg" onclick="galGo(2)" style="border:1px solid var(--gold)">
-      <img src="img/hd_ocean.jpg" onclick="galGo(3)">
-      <img src="img/terraza_vista_hd.jpg" onclick="galGo(4)">
-      <img src="img/hd_balandra2.jpg" onclick="galGo(5)" style="border:1px solid var(--gold)">
-      <img src="img/rooftop_teva_poster.jpg" onclick="galGo(6)">
-      <img src="img/hd_balandra2.jpg" onclick="galGo(7)">
-      <img src="img/cocina_comedor_hd.jpg" onclick="galGo(8)" style="border:1px solid var(--gold)">
-      <img src="img/hd_building_real2.jpg" onclick="galGo(9)">
-      <img src="img/floorplan_type1.jpg" onclick="galGo(10)">
-    </div>
-  </div>
-  <div class="acabados">
-    <div class="acabado reveal"><span class="chk">✓</span><span>Cocina integral: parrilla eléctrica, campana, mezcladora, fregadero, cubierta y backsplash de granito, muebles en MDF</span></div>
-    <div class="acabado reveal"><span class="chk">✓</span><span>Aire acondicionado incluido: 1 ton en cada recámara + 2 ton en sala</span></div>
-    <div class="acabado reveal"><span class="chk">✓</span><span>Cubierta de granito, resistente y elegante</span></div>
-    <div class="acabado reveal"><span class="chk">✓</span><span>Aluminio línea español, moderno y duradero</span></div>
-  </div>
-</section>
-
-<!-- 10. ROOFTOP -->
-<section class="full-img" id="rooftop" style="min-height:100vh;overflow:hidden">
-  <video autoplay muted loop playsinline style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;transform:translate(-50%,-50%);object-fit:cover"><source src="vid/roof_zoom.mp4" type="video/mp4"></video>
-  <div class="dark" style="background:rgba(0,0,0,.5)"></div>
-  <div class="c" style="max-width:1000px">
-    <h2 class="reveal" style="font-size:clamp(40px,5vw,64px);letter-spacing:10px">ROOF TOP</h2>
-    <p class="reveal ssub" style="margin-top:8px">Tu espacio privado sobre La Paz</p>
-    <div class="gline reveal"></div>
-    <div style="font-size:60px;margin:20px 0;cursor:pointer;transition:transform .3s;display:inline-block;opacity:0.8" class="play-btn reveal" onclick="playVideo('vid/rooftop.mp4')">▶</div>
-    <div class="roof-feat">
-      <div class="rf reveal"><div class="rf-ico">—</div><span>Alberca y Jacuzzi para 6 personas con vista panorámica</span></div>
-      <div class="rf reveal"><div class="rf-ico">—</div><span>Área de BBQ, pergolados y sala exterior</span></div>
-      <div class="rf reveal"><div class="rf-ico">—</div><span>Iluminación LED inteligente</span></div>
-      <div class="rf reveal"><div class="rf-ico">—</div><span>Vestidores y baños completos</span></div>
-      <div class="rf reveal"><div class="rf-ico">—</div><span>Vistas panorámicas de 360°</span></div>
-      <div class="rf reveal"><div class="rf-ico">—</div><span>Elevador para acceso cómodo</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- 11. TIPOS -->
-<section class="sec sec-dark" id="tipos">
-  <h2 class="stitle reveal">Tipos de Condominios</h2>
-  <p class="ssub reveal">2 Recámaras con closets empotrados &nbsp;|&nbsp; 2 Baños completos &nbsp;|&nbsp; Terraza privada</p>
-  <div class="gline reveal"></div>
-  <div class="tabs reveal">
+<!-- 4. UNIDADES + PRECIOS -->
+<section class="sec sec-dark" id="unidades">
+  <h2 class="stitle">Tipos de Condominios</h2>
+  <p class="ssub">2 Recámaras · 2 Baños · Terraza privada</p>
+  <div class="gline"></div>
+  <div class="tabs">
     <button class="tab on" onclick="swTab('sky',this)">TEVA SKY</button>
     <button class="tab" onclick="swTab('bay',this)">TEVA BAY</button>
   </div>
   <div class="tc on" id="tc-sky">
-    <div class="tl">
-      <div class="tl-plan reveal" style="position:relative;overflow:hidden">
-        <div id="skySlider" style="display:flex;transition:transform .5s ease;width:200%">
-          <img src="img/bedroom_sky.jpg" alt="Recámara TEVA SKY" style="width:50%;object-fit:cover">
-          <img src="img/plan_sky.jpg" alt="Plano TEVA SKY" style="width:50%;object-fit:contain;background:#f5f0eb">
+    <div class="unit-layout">
+      <div class="unit-flex">
+        <div><img src="img/plan_sky.jpg" alt="Plano TEVA SKY" loading="lazy"></div>
+        <div>
+          <h3>TEVA SKY</h3>
+          <div class="conf">Optimizado para rentabilidad vacacional</div>
+          <div class="ac"><span class="lb">Superficie Total</span><span><span class="vl">108.08 m²</span><span class="sm">(1,163 ft²)</span></span></div>
+          <div class="ac"><span class="lb">Interior</span><span><span class="vl">93.34 m²</span></span></div>
+          <div class="ac"><span class="lb">Terraza</span><span><span class="vl">14.74 m²</span></span></div>
         </div>
-        <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:2">
-          <span onclick="document.getElementById('skySlider').style.transform='translateX(0)';this.style.background='var(--gold)';this.nextElementSibling.style.background='rgba(255,255,255,.4)'" style="width:10px;height:10px;border-radius:50%;background:var(--gold);cursor:pointer;transition:all .3s"></span>
-          <span onclick="document.getElementById('skySlider').style.transform='translateX(-50%)';this.style.background='var(--gold)';this.previousElementSibling.style.background='rgba(255,255,255,.4)'" style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .3s"></span>
-        </div>
-        <div onclick="let s=document.getElementById('skySlider');let c=s.style.transform==='translateX(-50%)'?'translateX(0)':'translateX(-50%)';s.style.transform=c" style="position:absolute;top:50%;right:10px;transform:translateY(-50%);width:36px;height:36px;background:rgba(0,0,0,.5);border:1px solid var(--gold);color:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;z-index:2;backdrop-filter:blur(6px)">›</div>
-      </div>
-      <div class="tl-info">
-        <h3 class="reveal">TEVA SKY</h3>
-        <div class="conf reveal">Layout optimizado para rentabilidad vacacional</div>
-        <div class="ac reveal"><span class="lb">Superficie Total</span><span><span class="vl">108.08 m²</span><span class="sm">(1,163 ft²)</span></span></div>
-        <div class="ac reveal"><span class="lb">Interior</span><span><span class="vl">93.34 m²</span><span class="sm">(1,004 ft²)</span></span></div>
-        <div class="ac reveal"><span class="lb">Terraza</span><span><span class="vl">14.74 m²</span><span class="sm">(158 ft²)</span></span></div>
-        <div class="conf reveal" style="margin-top:16px;font-size:12px;color:var(--text-dim);line-height:1.8">Sala-comedor integrado con cocina abierta · Recámaras con closets empotrados · Terraza con acceso desde sala y recámara principal</div>
       </div>
     </div>
   </div>
   <div class="tc" id="tc-bay">
-    <div class="tl">
-      <div class="tl-plan reveal"><img src="img/plan_bay.jpg" alt="TEVA BAY"></div>
-      <div class="tl-info">
-        <h3 class="reveal">TEVA BAY</h3>
-        <div class="conf reveal">Mayor superficie con terraza premium</div>
-        <div class="ac reveal"><span class="lb">Superficie Total</span><span><span class="vl">127.76 m²</span><span class="sm">(1,375 ft²)</span></span></div>
-        <div class="ac reveal"><span class="lb">Interior</span><span><span class="vl">109.87 m²</span><span class="sm">(1,182 ft²)</span></span></div>
-        <div class="ac reveal"><span class="lb">Terraza</span><span><span class="vl">17.89 m²</span><span class="sm">(192 ft²)</span></span></div>
-        <div class="conf reveal" style="margin-top:16px;font-size:12px;color:var(--text-dim);line-height:1.8">Sala-comedor integrado con cocina abierta · Recámaras con closets empotrados · Terraza con acceso desde sala y recámara principal</div>
+    <div class="unit-layout">
+      <div class="unit-flex">
+        <div><img src="img/plan_bay_new.jpg" alt="Plano TEVA BAY" loading="lazy"></div>
+        <div>
+          <h3>TEVA BAY</h3>
+          <div class="conf">Mayor superficie con terraza premium</div>
+          <div class="ac"><span class="lb">Superficie Total</span><span><span class="vl">127.76 m²</span><span class="sm">(1,375 ft²)</span></span></div>
+          <div class="ac"><span class="lb">Interior</span><span><span class="vl">109.87 m²</span></span></div>
+          <div class="ac"><span class="lb">Terraza</span><span><span class="vl">17.89 m²</span></span></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 12. LIFESTYLE DIVIDER - VIDEO -->
-<div class="vid-divider" style="height:50vh">
-  <video autoplay muted loop playsinline poster="img/hd_jacuzzi_people.jpg" style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;transform:translate(-50%,-50%);object-fit:cover;filter:brightness(.55)">
-    <source src="vid/playa_walk.mp4" type="video/mp4">
-  </video>
-  <div class="c">
-    <h2 class="reveal" style="font-size:clamp(22px,3vw,36px);letter-spacing:4px;font-style:italic">"Cada detalle está pensado para maximizar<br>tu experiencia de vida como tu retorno de inversión"</h2>
-  </div>
-</div>
-
-<!-- 13. PRECIOS -->
+<!-- 5. PRECIOS -->
 <section class="sec sec-brown" id="precios">
-  <h2 class="stitle reveal">Precios Preferenciales</h2>
-  <p class="ssub reveal">Exclusivos para asesores AMPI</p>
-  <div class="gline reveal"></div>
-  <div class="bldg reveal">
-    <div class="roof-bar">✦ &nbsp; ROOF TOP &nbsp; ✦</div>
+  <h2 class="stitle">Precios</h2>
+  <p class="ssub">Desde $5,457,500 MXN</p>
+  <div class="gline"></div>
+  <div class="bldg">
+    <div class="roof-bar">✦ ROOF TOP ✦</div>
     <div class="flr"><div class="flr-lbl">P6</div>
-      <div class="uc rsv"><div><div class="uc-name">601</div><div class="uc-det">Vista al Mar</div></div><span class="badge badge-o">Reservado</span></div>
-      <div class="uc rsv"><div><div class="uc-name">602</div><div class="uc-det">Vista al Mar</div></div><span class="badge badge-o">Reservado</span></div>
+      <div class="uc rsv"><div><div class="uc-name">601</div><div class="uc-det">Al Mar</div></div><span class="badge badge-o">Reservado</span></div>
+      <div class="uc rsv"><div><div class="uc-name">602</div><div class="uc-det">Al Mar</div></div><span class="badge badge-o">Reservado</span></div>
     </div>
     <div class="flr"><div class="flr-lbl">P5</div>
-      <div class="uc"><div><div class="uc-name">501</div><div class="uc-det">Vista al Mar</div></div><div><div class="uc-price">$7,215,000 MXN</div><span class="badge badge-g">Disponible</span></div></div>
-      <div class="uc"><div><div class="uc-name">502</div><div class="uc-det">Vista al Mar</div></div><div><div class="uc-price">$7,030,000 MXN</div><span class="badge badge-g">Disponible</span></div></div>
+      <div class="uc"><div><div class="uc-name">501</div><div class="uc-det">Al Mar</div></div><div><div class="uc-price">$7,215,000</div><span class="badge badge-g">Disponible</span></div></div>
+      <div class="uc"><div><div class="uc-name">502</div><div class="uc-det">Al Mar</div></div><div><div class="uc-price">$7,030,000</div><span class="badge badge-g">Disponible</span></div></div>
     </div>
     <div class="flr"><div class="flr-lbl">P4</div>
-      <div class="uc"><div><div class="uc-name">401</div><div class="uc-det">Vista al Mar</div></div><div><div class="uc-price">$6,845,000 MXN</div><span class="badge badge-g">Disponible</span></div></div>
-      <div class="uc"><div><div class="uc-name">402</div><div class="uc-det">Vista al Mar</div></div><div><div class="uc-price">$6,660,000 MXN</div><span class="badge badge-g">Disponible</span></div></div>
+      <div class="uc"><div><div class="uc-name">401</div><div class="uc-det">Al Mar</div></div><div><div class="uc-price">$6,845,000</div><span class="badge badge-g">Disponible</span></div></div>
+      <div class="uc"><div><div class="uc-name">402</div><div class="uc-det">Al Mar</div></div><div><div class="uc-price">$6,660,000</div><span class="badge badge-g">Disponible</span></div></div>
     </div>
     <div class="flr"><div class="flr-lbl">P3</div>
-      <div class="uc"><div><div class="uc-name">301</div><div class="uc-det">Vista al Mar</div></div><div><div class="uc-price">$6,475,000 MXN</div><span class="badge badge-g">Disponible</span></div></div>
-      <div class="uc"><div><div class="uc-name">302</div><div class="uc-det">Vista al Mar</div></div><div><div class="uc-price">$6,197,500 MXN</div><span class="badge badge-g">Disponible</span></div></div>
+      <div class="uc"><div><div class="uc-name">301</div><div class="uc-det">Al Mar</div></div><div><div class="uc-price">$6,475,000</div><span class="badge badge-g">Disponible</span></div></div>
+      <div class="uc"><div><div class="uc-name">302</div><div class="uc-det">Al Mar</div></div><div><div class="uc-price">$6,197,500</div><span class="badge badge-g">Disponible</span></div></div>
     </div>
     <div class="flr"><div class="flr-lbl">P2</div>
-      <div class="uc"><div><div class="uc-name">201</div><div class="uc-det">Vista a la Ciudad</div></div><div><div class="uc-price">$5,920,000 MXN</div><span class="badge badge-g">Disponible</span></div></div>
-      <div class="uc"><div><div class="uc-name">202</div><div class="uc-det">Vista a la Ciudad</div></div><div><div class="uc-price">$5,457,500 MXN</div><span class="badge badge-g">Disponible</span></div></div>
+      <div class="uc"><div><div class="uc-name">201</div><div class="uc-det">Ciudad</div></div><div><div class="uc-price">$5,920,000</div><span class="badge badge-g">Disponible</span></div></div>
+      <div class="uc"><div><div class="uc-name">202</div><div class="uc-det">Ciudad</div></div><div><div class="uc-price">$5,457,500</div><span class="badge badge-g">Disponible</span></div></div>
     </div>
-    <div class="ground-bar" style="cursor:pointer;transition:all .3s" onmouseenter="this.style.color='var(--gold)';this.style.borderColor='var(--gold)'" onmouseleave="this.style.color='';this.style.borderColor=''" onclick="document.getElementById('parkingModal').style.display='flex'">PLANTA BAJA — ESTACIONAMIENTO — LOBBY &nbsp;<span style='font-size:10px;opacity:.7'>(ver plano)</span></div>
+    <div class="ground-bar" onclick="document.getElementById('parkingModal').style.display='flex'" style="cursor:pointer">ESTACIONAMIENTO · LOBBY <span style="font-size:9px;opacity:.6">(ver plano)</span></div>
+  </div>
+
+  <!-- Payment plan compact -->
+  <div style="margin-top:40px">
+    <h3 style="text-align:center;font-size:18px;color:var(--gold);margin-bottom:16px">Plan de Pagos</h3>
+    <div class="pay-steps">
+      <div class="pay-step"><div class="pay-dot">1</div><div><div class="pay-amt">$100,000 MXN — Reservación</div><div class="pay-desc">100% Reembolsable</div></div></div>
+      <div class="pay-step"><div class="pay-dot">2</div><div><div class="pay-amt">30% — Firma Contrato</div><div class="pay-desc">Menos $100K de reservación</div></div></div>
+      <div class="pay-step"><div class="pay-dot">3</div><div><div class="pay-amt">30% — Término Estructura</div><div class="pay-desc">Hasta Roof Garden</div></div></div>
+      <div class="pay-step"><div class="pay-dot">4</div><div><div class="pay-amt">30% — Término Acabados</div><div class="pay-desc">Interiores y exteriores</div></div></div>
+      <div class="pay-step"><div class="pay-dot">5</div><div><div class="pay-amt">10% — Escrituración</div><div class="pay-desc">Entrega de propiedad</div></div></div>
+    </div>
+    <p style="text-align:center;font-size:11px;color:var(--text-dim);margin-top:16px">Comisión: 6% + IVA · Se divide 50/50 entre agencias (AMPI/ASPI/MLS) · Se paga con el primer 30% y firma de contrato</p>
   </div>
 </section>
 
-<!-- 14. PAGOS -->
-<section class="sec sec-dark" id="pagos">
-  <h2 class="stitle reveal">Plan de Pagos</h2>
-  <p class="ssub reveal">Facilidades para tu inversión</p>
-  <div class="gline reveal"></div>
-  <div class="tl-wrap">
-    <div class="ti reveal"><div class="ti-dot">1</div><div class="ti-c"><div class="ti-amt">$100,000 MXN — Reservación</div><div class="ti-desc">100% Reembolsable hasta la firma del Contrato de Promesa de Compraventa</div></div></div>
-    <div class="ti reveal"><div class="ti-dot">2</div><div class="ti-c"><div class="ti-amt">30% — Firma del Contrato</div><div class="ti-desc">Menos los $100,000 MXN de la Reservación</div></div></div>
-    <div class="ti reveal"><div class="ti-dot">3</div><div class="ti-c"><div class="ti-amt">30% — Término de Estructura</div><div class="ti-desc">Hasta la construcción del Roof Garden</div></div></div>
-    <div class="ti reveal"><div class="ti-dot">4</div><div class="ti-c"><div class="ti-amt">30% — Término de Acabados</div><div class="ti-desc">Al completarse acabados interiores y exteriores</div></div></div>
-    <div class="ti reveal"><div class="ti-dot">5</div><div class="ti-c"><div class="ti-amt">10% — Firma de Escrituración</div><div class="ti-desc">A la entrega y formalización de la propiedad</div></div></div>
+<!-- 6. EQUIPO -->
+<section class="sec sec-dark" id="equipo">
+  <h2 class="stitle">El Equipo</h2>
+  <p class="ssub">Desarrollo, construcción y comercialización</p>
+  <div class="gline"></div>
+  <div class="team-grid">
+    <div class="team-col">
+      <div class="team-col-title">Desarrollo & Construcción</div>
+      <div class="team-logos">
+        <img src="img/logo_habitat_new.png" alt="Habitat" style="height:45px">
+        <img src="img/logo_contempo.png" alt="Contempo" style="height:42px">
+        <img src="img/logo_beyond.png" alt="Beyond Spaces" style="height:42px">
+      </div>
+    </div>
+    <div class="team-col">
+      <div class="team-col-title">Marketing & Ventas</div>
+      <div class="team-logos">
+        <img src="img/logo_global_v2.png" alt="Global Real Estate" style="height:45px">
+      </div>
+    </div>
   </div>
+  <div class="team-photo">
+    <img src="img/equipo_arranque_crop.jpg" alt="Equipo TEVA" loading="lazy">
+  </div>
+  <p style="text-align:center;color:var(--text-dim);font-size:11px;margin-top:10px">Colocación de primera piedra — TEVA by Aurora</p>
+  <!-- Construction video -->
+  <div style="max-width:500px;margin:24px auto 0;border-radius:10px;overflow:hidden;border:1px solid var(--glass-b);cursor:pointer" onclick="playVideo('vid/promo_audio.mp4')">
+    <div style="position:relative">
+      <video style="width:100%;display:block" preload="none" poster="img/hd_building_real2.jpg"><source src="vid/promo_audio.mp4" type="video/mp4"></video>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3)">
+        <div style="width:50px;height:50px;border-radius:50%;background:rgba(197,165,114,.9);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;padding-left:4px">▶</div>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center;color:var(--gold);font-size:11px;margin-top:8px">Avance de Obra — Video con sonido</p>
 </section>
 
-
-
-<!-- 16. FAQ -->
-<section class="sec sec-brown" id="faq">
-  <h2 class="stitle reveal">Ficha Técnica para Asesores</h2>
-  <p class="ssub reveal">Pasa el cursor sobre cada tarjeta para ver detalles</p>
-  <div class="gline reveal"></div>
-  <div class="faq-card-expanded-overlay" id="faqOverlay"></div>
-  <div class="faq-cards">
-
-    <div class="faq-card reveal">
-      <div class="faq-card-bg" style="background-image:url('img/rooftop_teva_poster.jpg')"></div>
-      <div class="faq-card-overlay"></div>
-      <div class="faq-card-content">
-        <h4>Alberca + Jacuzzi</h4>
-        <div class="faq-brief">Roof Top con vista al mar</div>
-        <div class="faq-detail-text">
-          <p><strong>Alberca 3.22 × 4.26 m</strong> y <strong>Jacuzzi radio 3.62 m</strong> para 6 personas. Vista panorámica a La Paz y el Mar de Cortés.</p>
-          <span class="faq-tag">Roof Top</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="faq-card reveal">
-      <div class="faq-card-bg" style="background-image:url('img/cocina_comedor_hd.jpg')"></div>
-      <div class="faq-card-overlay"></div>
-      <div class="faq-card-content">
-        <h4>Cocina Equipada</h4>
-        <div class="faq-brief">Granito + MDF premium</div>
-        <div class="faq-detail-text">
-          <p><strong>Parrilla eléctrica, campana, mezcladora y fregadero.</strong> Cubierta y backsplash de granito. Muebles de cocina en MDF.</p>
-          <span class="faq-tag">Incluido</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="faq-card reveal">
-      <div class="faq-card-bg" style="background-image:url('img/terraza_depto_hd.jpg')"></div>
-      <div class="faq-card-overlay"></div>
-      <div class="faq-card-content">
-        <h4>Aire Acondicionado</h4>
-        <div class="faq-brief">3 equipos por unidad</div>
-        <div class="faq-detail-text">
-          <p><strong>1 ton en cada recámara + 2 ton en la sala.</strong> Climatización completa en todo el departamento. Incluidos en el precio.</p>
-          <span class="faq-tag">Incluido</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="faq-card reveal">
-      <div class="faq-card-bg" style="background-image:url('img/elevador_teva.png')"></div>
-      <div class="faq-card-overlay"></div>
-      <div class="faq-card-content">
-        <h4>Elevador</h4>
-        <div class="faq-brief">Diferenciador clave</div>
-        <div class="faq-detail-text">
-          <p>Uno de los pocos edificios en La Paz con <strong>elevador</strong>. Acceso cómodo a todos los pisos, ideal para familias e inversionistas.</p>
-          <span class="faq-tag">Incluido</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="faq-card reveal">
-      <div class="faq-card-bg" style="background-image:url('img/floorplan_type1.jpg')"></div>
-      <div class="faq-card-overlay"></div>
-      <div class="faq-card-content">
-        <h4>Floor Plans</h4>
-        <div class="faq-brief">2 tipos de departamento</div>
-        <div class="faq-detail-text">
-          <p><strong>Tipo SKY:</strong> 93.33 m² · <strong>Tipo BAY:</strong> 109.86 m². Ambos con 2 recámaras, 2 baños, terraza y área de lavado.</p>
-          <span class="faq-tag">Distribución</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="faq-card reveal">
-      <div class="faq-card-bg" style="background-image:url('img/hd_rooftop_sunset.jpg')"></div>
-      <div class="faq-card-overlay"></div>
-      <div class="faq-card-content">
-        <h4>Equipo Roof Top</h4>
-        <div class="faq-brief">100% equipado</div>
-        <div class="faq-detail-text">
-          <p><strong>Sala exterior, barra de granito</strong> con fregadero, <strong>asador de gas, pergolado, baños</strong> completos y <strong>camastros.</strong> Listo desde el día uno.</p>
-          <span class="faq-tag">Incluido</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="faq-card reveal">
-      <div class="faq-card-bg" style="background-image:url('img/bodega_teva.jpg')"></div>
-      <div class="faq-card-overlay"></div>
-      <div class="faq-card-content">
-        <h4>Oficina y Bodega</h4>
-        <div class="faq-brief">Administración incluida</div>
-        <div class="faq-detail-text">
-          <p>El edificio incluye <strong>bodega</strong> y <strong>oficina administrativa</strong> para la gestión profesional del condominio.</p>
-          <span class="faq-tag">Áreas comunes</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="faq-card reveal">
-      <div class="faq-card-bg" style="background-image:url('img/parking_plan.png');background-size:contain;background-color:#e8e0d4"></div>
-      <div class="faq-card-overlay"></div>
-      <div class="faq-card-content">
-        <h4>Estacionamiento</h4>
-        <div class="faq-brief">Cajones asignados</div>
-        <div class="faq-detail-text">
-          <p><strong>Planta baja</strong> con cajones asignados por unidad. Acceso seguro y directo al lobby del edificio.</p>
-          <span class="faq-tag">Incluido</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="faq-card reveal">
-      <div class="faq-card-bg" style="background-image:url('img/cocina_comedor_hd.jpg')"></div>
-      <div class="faq-card-overlay"></div>
-      <div class="faq-card-content">
-        <h4>Mantenimiento</h4>
-        <div class="faq-brief">$28 MXN / m²</div>
-        <div class="faq-detail-text">
-          <p><strong>$28.00 MXN × m²</strong> de construcción mensual.<br>SKY: <strong>≈ $2,613/mes</strong> · BAY: <strong>≈ $3,076/mes</strong><br>Incluye áreas verdes, alberca y administración.</p>
-          <span class="faq-tag">Mensual</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  
-</section>
-
-<!-- 17. DESCARGAS (NEW) -->
-<section class="sec sec-dark" id="descargas">
-  <h2 class="stitle reveal">Material para Asesores</h2>
-  <p class="ssub reveal">Descarga y comparte con tus clientes</p>
-  <div class="gline reveal"></div>
-  <div class="tabs reveal" style="margin-bottom:30px">
-    <button class="tab on" onclick="switchDlTab(this,'dl-docs')">📄 Documentos</button>
-    <button class="tab" onclick="switchDlTab(this,'dl-plans')">📐 Planos</button>
-    <button class="tab" onclick="switchDlTab(this,'dl-videos')">🎬 Videos</button>
-  </div>
-  <div id="dl-docs" class="dl-tab-content">
+<!-- 7. MATERIAL + CONTACTO -->
+<section class="sec sec-brown" id="material">
+  <h2 class="stitle">Material para Asesores</h2>
+  <p class="ssub">Descarga y comparte</p>
+  <div class="gline"></div>
   <div class="dl-grid">
-    <div class="dl-card reveal">
-      <div class="dl-title">Folleto TEVA (Sin Logo)</div>
-      <div class="dl-desc">Versión en español sin logos — ponle el logo de tu agencia</div>
-      <a href="Folleto_Teva_SL.pdf" download class="dl-btn">Descargar</a>
+    <a class="dl-card" href="Folleto_Teva_SL.pdf" download>
+      <div class="dl-ico">📄</div>
+      <div><div class="dl-title">Folleto TEVA</div><div class="dl-desc">Español sin logos — ponle tu marca</div></div>
+      <span class="dl-btn">Descargar</span>
+    </a>
+    <a class="dl-card" href="Brochure_Teva_EN.pdf" download>
+      <div class="dl-ico">📄</div>
+      <div><div class="dl-title">Brochure TEVA</div><div class="dl-desc">English version</div></div>
+      <span class="dl-btn">Download</span>
+    </a>
+    <a class="dl-card" href="img/plan_sky.jpg" download>
+      <div class="dl-ico">📐</div>
+      <div><div class="dl-title">Plano TEVA SKY</div><div class="dl-desc">108.08 m²</div></div>
+      <span class="dl-btn">Descargar</span>
+    </a>
+    <a class="dl-card" href="img/plan_bay_new.jpg" download>
+      <div class="dl-ico">📐</div>
+      <div><div class="dl-title">Plano TEVA BAY</div><div class="dl-desc">127.76 m²</div></div>
+      <span class="dl-btn">Descargar</span>
+    </a>
+    <a class="dl-card" href="img/parking_plan2.png" download>
+      <div class="dl-ico">🅿️</div>
+      <div><div class="dl-title">Plano Estacionamiento</div><div class="dl-desc">Planta baja</div></div>
+      <span class="dl-btn">Descargar</span>
+    </a>
+    <a class="dl-card" href="img/plan_roof.jpg" download>
+      <div class="dl-ico">🏊</div>
+      <div><div class="dl-title">Plano Rooftop</div><div class="dl-desc">Amenidades</div></div>
+      <span class="dl-btn">Descargar</span>
+    </a>
+    <div class="dl-card" onclick="playVideo('vid/video-recorrido-obra.mp4')" style="cursor:pointer">
+      <div class="dl-ico">🎬</div>
+      <div><div class="dl-title">Video Recorrido</div><div class="dl-desc">Avance de obra</div></div>
+      <span class="dl-btn">Ver</span>
     </div>
-    <div class="dl-card reveal">
-      <div class="dl-title">Brochure TEVA (English)</div>
-      <div class="dl-desc">English version without logos</div>
-      <a href="Brochure_Teva_EN.pdf" download class="dl-btn">Descargar</a>
+    <div class="dl-card" onclick="playVideo('vid/promo_audio.mp4')" style="cursor:pointer">
+      <div class="dl-ico">🎬</div>
+      <div><div class="dl-title">Video Promo</div><div class="dl-desc">Con audio</div></div>
+      <span class="dl-btn">Ver</span>
     </div>
-    <div class="dl-card reveal">
-      <div class="dl-title">Galería de Renders</div>
-      <div class="dl-desc">Interiores y exteriores HD</div>
-      <a href="#" class="dl-btn">Próximamente</a>
-    </div>
-  </div>
-  </div>
-  <div id="dl-plans" class="dl-tab-content" style="display:none">
-  <div class="dl-grid">
-    <div class="dl-card reveal">
-      <div class="dl-title">Plano TEVA SKY</div>
-      <div class="dl-desc">108 m² — Layout y dimensiones</div>
-      <a href="img/plan_sky.jpg" download class="dl-btn">Descargar</a>
-    </div>
-    <div class="dl-card reveal">
-      <div class="dl-title">Plano TEVA BAY</div>
-      <div class="dl-desc">127.7 m² — Layout y dimensiones</div>
-      <a href="img/plan_bay.jpg" download class="dl-btn">Descargar</a>
-    </div>
-    <div class="dl-card reveal">
-      <div class="dl-title">Plano Roof Top</div>
-      <div class="dl-desc">Distribución del rooftop</div>
-      <a href="img/plan_roof.jpg" download class="dl-btn">Descargar</a>
-    </div>
-    <div class="dl-card reveal">
-      <div class="dl-title">Plano Estacionamiento</div>
-      <div class="dl-desc">Distribución planta baja</div>
-      <a href="img/parking_plan.png" download class="dl-btn">Descargar</a>
-    </div>
-  </div>
-  </div>
-  <div id="dl-videos" class="dl-tab-content" style="display:none">
-  <div class="dl-grid">
-    <div class="dl-card reveal">
-      <div class="dl-title">🎥 Recorrido de Obra</div>
-      <div class="dl-desc">Video completo del avance de construcción</div>
-      <a href="vid/video-recorrido-obra.mp4" download class="dl-btn">Descargar Video</a>
-    </div>
-    <div class="dl-card reveal">
-      <div class="dl-title">🎥 Avance de Obra</div>
-      <div class="dl-desc">Actualización más reciente del progreso</div>
-      <a href="vid/video-avance-obra.mp4" download class="dl-btn">Descargar Video</a>
-    </div>
-    <div class="dl-card reveal">
-      <div class="dl-title">🎥 Rooftop Paneo</div>
-      <div class="dl-desc">Vista panorámica del rooftop con vistas a la bahía</div>
-      <a href="vid/roof_paneo.mp4" download class="dl-btn">Descargar Video</a>
-    </div>
-    <div class="dl-card reveal">
-      <div class="dl-title">🎥 Rooftop Zoom</div>
-      <div class="dl-desc">Acercamiento a detalles del rooftop</div>
-      <a href="vid/roof_zoom.mp4" download class="dl-btn">Descargar Video</a>
-    </div>
-  </div>
-  </div>
-  
-</section>
-
-<!-- 18. CONTACTO -->
-<section class="sec" id="contacto" style="min-height:100vh;position:relative;overflow:hidden;padding:100px 4% 60px">
-  <div class="bg kb kb1" style="position:absolute;inset:0;background:url('img/terraza_teva_hd.png')center/cover;z-index:0"></div>
-  <div style="position:absolute;inset:0;background:rgba(0,0,0,.65);z-index:1"></div>
-  <div style="position:relative;z-index:2;max-width:800px;margin:0 auto;text-align:center">
-    <h2 class="reveal" style="font-size:clamp(24px,3.5vw,40px);line-height:1.3;max-width:700px;margin:0 auto 20px;font-family:'Playfair Display',serif;letter-spacing:3px">Invitamos a tus Clientes a Conocer el Proyecto en Cualquier Momento</h2>
-    <div class="gline reveal"></div>
-    <p class="reveal" style="font-size:18px;color:var(--gold);letter-spacing:2px;margin-bottom:40px">¡Solo 8 unidades disponibles!</p>
-    <div class="cta-cards">
-      <a class="cc reveal" href="tel:+526121284433"><div class="cc-ico">Tel</div><div class="cc-lbl">Teléfono</div><div class="cc-val">612 128 4433</div></a>
-      <a class="cc reveal" href="https://wa.me/526121989771" target="_blank"><div class="cc-ico">WA</div><div class="cc-lbl">WhatsApp</div><div class="cc-val">612 198 9771</div></a>
-      <a class="cc reveal" href="mailto:info@globalrealestate.com.mx"><div class="cc-ico">Mail</div><div class="cc-lbl">Email</div><div class="cc-val">info@globalrealestate.com.mx</div></a>
-      <a class="cc reveal" href="https://maps.app.goo.gl/kQxKZjnxu3qhrHkZ7" target="_blank"><div class="cc-ico">Loc</div><div class="cc-lbl">Oficina</div><div class="cc-val">V. Gómez Farías 1150, La Paz</div></a>
-    </div>
-    <a href="https://wa.me/526121989771?text=Hola%2C%20me%20interesa%20TEVA%20by%20Aurora.%20Soy%20asesor%20AMPI." class="wa-btn reveal" target="_blank">Escríbenos por WhatsApp</a>
-    <div class="foot-logos reveal">
-      <img src="img/logo_teva.png" alt="TEVA">
-      <img src="img/logo_global_v2.png" alt="Global RE">
-    </div>
-    <p class="reveal" style="margin-top:25px;font-size:10px;color:var(--text-dim)">TEVA by AURORA &nbsp;|&nbsp; La Paz, B.C.S., México &nbsp;|&nbsp; Presentación exclusiva AMPI</p>
   </div>
 </section>
 
+<!-- CONTACTO -->
+<section class="sec sec-dark" id="contacto">
+  <div class="cta-box">
+    <h3 style="font-size:20px;margin-bottom:10px">¿Listo para cerrar?</h3>
+    <p style="color:var(--text-dim);font-size:13px;margin-bottom:16px">Contacta a Global Real Estate</p>
+    <a href="tel:6121284433">612-128-4433</a>
+    <p style="margin-top:12px;font-size:10px;color:var(--text-dim)">TEVA by AURORA · La Paz, B.C.S. · Presentación AMPI</p>
+  </div>
+</section>
 
-<div id="vmodal">
+<!-- VIDEO MODAL -->
+<div id="vmodal" onclick="if(event.target===this)closeVideo()">
   <video id="modalVid" controls playsinline></video>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<!-- PARKING MODAL -->
+<div id="parkingModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:none;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(12px)" onclick="this.style.display='none'">
+  <div style="position:absolute;top:16px;right:20px;color:var(--gold);font-size:30px;cursor:pointer">&times;</div>
+  <img src="img/parking_plan2.png" alt="Estacionamiento" style="max-width:90vw;max-height:85vh;border-radius:10px" onclick="event.stopPropagation()">
+</div>
+
+<!-- SCRIPTS -->
 <script>
-// LOADER
-window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('done');heroAnim()},1800)});
-
-// PARTICLES
-(()=>{const c=document.getElementById('particles');for(let i=0;i<30;i++){const p=document.createElement('div');p.className='p';p.style.left=Math.random()*100+'%';p.style.animationDuration=(8+Math.random()*14)+'s';p.style.animationDelay=Math.random()*12+'s';p.style.width=p.style.height=(2+Math.random()*3)+'px';c.appendChild(p)}})();
-
-// HERO ANIM
-function switchDlTab(btn,tabId){document.querySelectorAll('.dl-tab-content').forEach(t=>t.style.display='none');document.getElementById(tabId).style.display='block';btn.closest('.tabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));btn.classList.add('on')}
-function heroAnim(){const t=gsap.timeline();t.to('.hero-welcome',{opacity:1,y:0,duration:1,ease:'power3.out'}).to('.hero-c img',{opacity:1,y:0,duration:1.2,ease:'power3.out'},'-=.5').to('.hero-c .tag',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.8').to('.hero-c .line',{opacity:1,width:60,duration:.6},'-=.4').to('.hero-c .loc',{opacity:1,duration:.5},'-=.2').to('.hero-c .sub',{opacity:1,duration:.5},'-=.2').to('.scroll-arrow',{opacity:1,duration:.4},'-=.1')}
-
-// GSAP
-gsap.registerPlugin(ScrollTrigger);
-document.querySelectorAll('.reveal').forEach(el=>{gsap.fromTo(el,{opacity:0,y:40},{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'}})});
-
-// COUNTERS
-document.querySelectorAll('.stat-n').forEach(el=>{const t=parseFloat(el.dataset.t),p=el.dataset.p||'',s=el.dataset.s||'',isI=t>=100;ScrollTrigger.create({trigger:el,start:'top 88%',onEnter:()=>{gsap.to({v:0},{v:t,duration:2.2,ease:'power2.out',onUpdate:function(){const v=this.targets()[0].v;el.textContent=p+(isI?Math.round(v).toLocaleString():v.toFixed(1))+s}})},once:true})});
-
-// NAV DOTS - UPDATED WITH NEW ORDER
-const secs=['hero','oportunidad','malecon','ubicacion','mercado','redes','avance','proyecto','interiores','rooftop','tipos','precios','pagos','faq','descargas','contacto'];
-const labels=['Inicio','Oportunidad','Malecón','Ubicación','Mercado','Redes','Obra','Proyecto','Interiores','Rooftop','Unidades','Precios','Pagos','Ficha','Material','Contacto'];
-const dotsC=document.getElementById('dots');
-secs.forEach((s,i)=>{const a=document.createElement('a');a.href='#'+s;a.innerHTML=`<span class="tip">${labels[i]}</span>`;if(i===0)a.classList.add('on');dotsC.appendChild(a)});
-const dotEls=dotsC.querySelectorAll('a');
-window.addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{const el=document.getElementById(s);if(el&&scrollY>=el.offsetTop-300)cur=s});dotEls.forEach(d=>{d.classList.toggle('on',d.getAttribute('href')==='#'+cur)});document.getElementById('topnav').classList.toggle('scrolled',scrollY>100)});
-
 // GALLERY
-let gIdx=0;const gSlides=document.querySelectorAll('#galHero > img, #galHero > video'),gThumbs=document.querySelectorAll('#thumbs img'),gCount=document.getElementById('galCount');
+let gIdx=0;
+const gSlides=document.querySelectorAll('#gal > img, #gal > video');
 function galGo(i){
   gSlides.forEach((m,j)=>{
-    const isOn=j===i;
-    m.classList.toggle('on',isOn);
-    if(m.tagName==='VIDEO'){isOn?m.play():( m.pause(), m.currentTime=0)}
+    const on=j===i;
+    m.classList.toggle('on',on);
+    if(m.tagName==='VIDEO'){on?m.play():(m.pause(),m.currentTime=0)}
   });
-  gThumbs.forEach((t,j)=>t.classList.toggle('on',j===i));
-  gIdx=i;gCount.textContent=(i+1)+' / '+gSlides.length;
+  gIdx=i;
+  document.getElementById('galCount').textContent=(i+1)+' / '+gSlides.length;
 }
 function galNav(d){galGo((gIdx+d+gSlides.length)%gSlides.length)}
-setInterval(()=>galNav(1),6000);
+setInterval(()=>galNav(1),5000);
 
-// PROYECTO SHOWCASE
-(function(){
-  const items=document.querySelectorAll('#projList .proj-item');
-  const media=document.querySelectorAll('#projPreview img, #projPreview video');
-  let current=0;
-  function showItem(idx){
-    items.forEach(i=>i.classList.remove('active'));
-    items[idx].classList.add('active');
-    media.forEach(m=>{
-      const isOn=parseInt(m.dataset.idx)===idx;
-      m.classList.toggle('active',isOn);
-      if(m.tagName==='VIDEO'){isOn?m.play():(m.pause(),m.currentTime=0)}
-    });
-    current=idx;
-  }
-  items.forEach((item,i)=>{
-    item.addEventListener('mouseenter',()=>showItem(i));
-    item.addEventListener('click',()=>showItem(i));
-  });
-  setInterval(()=>{showItem((current+1)%items.length)},5000);
-})();
+// Touch swipe for gallery
+let gTouch=0;
+document.getElementById('gal').addEventListener('touchstart',e=>{gTouch=e.touches[0].clientX},{passive:true});
+document.getElementById('gal').addEventListener('touchend',e=>{const diff=e.changedTouches[0].clientX-gTouch;if(Math.abs(diff)>50)galNav(diff>0?-1:1)},{passive:true});
 
 // TABS
-function swTab(t,btn){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));document.querySelectorAll('.tc').forEach(c=>c.classList.remove('on'));btn.classList.add('on');document.getElementById('tc-'+t).classList.add('on')}
+function swTab(t,btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('tc-'+t).classList.add('on');
+}
 
 // VIDEO MODAL
 function playVideo(src){const m=document.getElementById('vmodal'),v=document.getElementById('modalVid');v.src=src;m.classList.add('show');v.play()}
 function closeVideo(){const m=document.getElementById('vmodal'),v=document.getElementById('modalVid');v.pause();v.src='';m.classList.remove('show')}
-document.getElementById('vmodal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeVideo()});
 
 // SMOOTH SCROLL
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'})})});
 
-// CONSTRUCTION VIDEO CONTROLS
-function toggleConstructionFS(el){
-  if(document.fullscreenElement){document.exitFullscreen()}
-  else{el.requestFullscreen().catch(()=>{})}
-}
-function toggleConstructionMute(){
-  const v=document.getElementById('constructionVid');
-  const btn=document.getElementById('conMuteBtn');
-  v.muted=!v.muted;
-  btn.textContent=v.muted?'M':'S';
-}
-
-// FLOOR HOVER
-document.querySelectorAll('.flr').forEach(r=>{r.addEventListener('mouseenter',()=>{gsap.to(r.querySelectorAll('.uc:not(.rsv)'),{backgroundColor:'rgba(197,165,114,.08)',duration:.3})});r.addEventListener('mouseleave',()=>{gsap.to(r.querySelectorAll('.uc:not(.rsv)'),{backgroundColor:'rgba(255,255,255,.04)',duration:.3})})});
+// NAV SCROLL
+window.addEventListener('scroll',()=>{document.getElementById('topnav').classList.toggle('scrolled',scrollY>50)});
 </script>
-<!-- PARKING MODAL -->
-<div id="parkingModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(12px);cursor:pointer" onclick="this.style.display='none'">
-  <div style="position:absolute;top:24px;right:32px;color:var(--gold);font-size:36px;cursor:pointer;z-index:10000;font-weight:200">&times;</div>
-  <div style="position:absolute;top:24px;left:32px;color:var(--gold);font-size:13px;letter-spacing:3px;text-transform:uppercase">Plano de Estacionamiento &mdash; TEVA by Aurora</div>
-  <img src="img/parking_plan.png" alt="Plano Estacionamiento" style="max-width:90vw;max-height:85vh;border-radius:12px;border:1px solid var(--glass-b);box-shadow:0 20px 80px rgba(0,0,0,.6)" onclick="event.stopPropagation()">
-</div>
-<script>
-(function(){
-  const overlay=document.getElementById('faqOverlay');
-  const cards=document.querySelectorAll('.faq-card');
-  let activeCard=null,hoverTimer=null,origRect=null,locked=false;
 
-  function expand(card){
-    if(activeCard||locked)return;
-    locked=true;
-    activeCard=card;
-    origRect=card.getBoundingClientRect();
-
-    /* placeholder keeps grid layout stable */
-    const ph=document.createElement('div');
-    ph.style.cssText='height:'+origRect.height+'px;visibility:hidden';
-    card.parentNode.insertBefore(ph,card);
-    card._ph=ph;
-
-    /* pin at current position */
-    card.style.cssText='position:fixed;top:'+origRect.top+'px;left:'+origRect.left+'px;width:'+origRect.width+'px;height:'+origRect.height+'px;margin:0;z-index:9999;opacity:1;transform:none;';
-    overlay.classList.add('active');
-
-    /* force layout so browser knows the start position */
-    card.offsetHeight;
-    card.classList.add('expanding');
-
-    /* animate to near-fullscreen after paint */
-    setTimeout(()=>{
-      const p=30;
-      card.style.top=p+'px';
-      card.style.left=p+'px';
-      card.style.width=(window.innerWidth-p*2)+'px';
-      card.style.height=(window.innerHeight-p*2)+'px';
-      setTimeout(()=>{locked=false;overlay.classList.add('interactive')},800);
-    },20);
-  }
-
-  function collapse(){
-    if(!activeCard||locked)return;
-    locked=true;
-    const card=activeCard;
-    const phRect=card._ph.getBoundingClientRect();
-    overlay.classList.remove('active');
-    overlay.classList.remove('interactive');
-
-    card.style.top=phRect.top+'px';
-    card.style.left=phRect.left+'px';
-    card.style.width=phRect.width+'px';
-    card.style.height=phRect.height+'px';
-
-    card.addEventListener('transitionend',function done(e){
-      if(e.propertyName!=='width')return;
-      card.removeEventListener('transitionend',done);
-      card.classList.remove('expanding');
-      card.style.cssText='';
-      if(card._ph){card._ph.remove();delete card._ph}
-      activeCard=null;origRect=null;locked=false;
-    });
-  }
-
-  cards.forEach(card=>{
-    card.addEventListener('mouseenter',()=>{
-      clearTimeout(hoverTimer);
-      if(!activeCard&&!locked)hoverTimer=setTimeout(()=>expand(card),180);
-    });
-    card.addEventListener('mouseleave',()=>{
-      clearTimeout(hoverTimer);
-      /* don't collapse — overlay mouseenter handles that */
-    });
-  });
-
-  /* collapse only when mouse leaves the expanded card — listen on overlay */
-  overlay.addEventListener('mouseenter',()=>{
-    if(activeCard&&!locked)collapse();
-  });
-  overlay.addEventListener('click',()=>{
-    if(activeCard&&!locked)collapse();
-  });
-})();
-</script>
 <!-- TEVA AI CHAT -->
 <div id="tevaChatBtn" onclick="tevaOpen()">
   <img src="img/teva_avatar_sm.jpg" alt="TEVA AI">
@@ -1262,7 +520,7 @@ document.querySelectorAll('.flr').forEach(r=>{r.addEventListener('mouseenter',()
       <input type="file" id="tevaFile" accept="image/*" onchange="tevaAttach(this)" style="display:none">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
     </label>
-    <button class="tc-mic" id="tevaMic" onclick="tevaVoiceInput()" title="Mantén para hablar">
+    <button class="tc-mic" id="tevaMic" onclick="tevaVoiceInput()" title="Habla">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
     </button>
     <input type="text" id="tevaInput" placeholder="Escribe o habla..." onkeydown="if(event.key==='Enter')tevaSend()">
@@ -1273,131 +531,103 @@ document.querySelectorAll('.flr').forEach(r=>{r.addEventListener('mouseenter',()
 const TEVA_API='https://lwhutsswaddvzyboiwlb.supabase.co/functions/v1/teva-ai-chat';
 let tevaMessages=[],tevaPendingImg=null,tevaVoiceOn=true,tevaSpeaking=false;
 
-/* TEXT-TO-SPEECH */
+/* TTS */
 let tevaVoices=[];
-function tevaLoadVoices(){
-  if(!('speechSynthesis' in window))return;
-  tevaVoices=speechSynthesis.getVoices();
-  if(!tevaVoices.length){speechSynthesis.addEventListener('voiceschanged',()=>{tevaVoices=speechSynthesis.getVoices()},{once:true})}
-}
+function tevaLoadVoices(){if(!('speechSynthesis' in window))return;tevaVoices=speechSynthesis.getVoices();if(!tevaVoices.length)speechSynthesis.addEventListener('voiceschanged',()=>{tevaVoices=speechSynthesis.getVoices()},{once:true})}
 tevaLoadVoices();
 
 function tevaSpeak(text){
   if(!tevaVoiceOn||!('speechSynthesis' in window))return;
   speechSynthesis.cancel();
-  /* Reload voices every time (fixes Chrome bug) */
   tevaVoices=speechSynthesis.getVoices();
-  const clean=text.replace(/!\[.*?\]\(.*?\)/g,'').replace(/\[([^\]]+)\]\(.*?\)/g,'$1').replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/📄|📐|🎬|🎥|😄|😊|🏗️|🔥|💪|👋|🌊|🏖️|☀️|💰|✅|🏠|📱|📞/g,'').replace(/\n/g,'. ').trim();
+  const clean=text.replace(/!\[.*?\]\(.*?\)/g,'').replace(/\[([^\]]+)\]\(.*?\)/g,'$1').replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/[📄📐🎬🎥😄😊🏗️🔥💪👋🌊🏖️☀️💰✅🏠📱📞]/g,'').replace(/\n/g,'. ').trim();
   if(!clean)return;
-  /* Split into small chunks (Chrome stops speaking at ~200 chars) */
-  const chunks=[];
-  const sentences=clean.split(/(?<=[.!?])\s+/);
-  let current='';
-  for(const s of sentences){
-    if((current+' '+s).length>120){if(current)chunks.push(current);current=s}
-    else current=current?current+' '+s:s;
-  }
-  if(current)chunks.push(current);
-  if(!chunks.length)return;
-
-  const msgs=document.querySelectorAll('.tc-msg.bot');
-  const lastMsg=msgs[msgs.length-1];
-
+  const chunks=[];const sentences=clean.split(/(?<=[.!?])\s+/);let cur='';
+  for(const s of sentences){if((cur+' '+s).length>120){if(cur)chunks.push(cur);cur=s}else cur=cur?cur+' '+s:s}
+  if(cur)chunks.push(cur);if(!chunks.length)return;
+  const msgs=document.querySelectorAll('.tc-msg.bot');const lastMsg=msgs[msgs.length-1];
   function speakChunk(i){
     if(i>=chunks.length){tevaSpeaking=false;if(lastMsg)lastMsg.classList.remove('speaking');return}
-    const utter=new SpeechSynthesisUtterance(chunks[i]);
-    utter.lang='es-MX';utter.rate=1.05;utter.pitch=1.1;utter.volume=1.0;
-    const v=tevaVoices.find(v=>v.lang==='es-MX'&&v.name.includes('Paulina'))||tevaVoices.find(v=>v.lang==='es-MX')||tevaVoices.find(v=>v.lang==='es-ES')||tevaVoices.find(v=>v.lang.startsWith('es'));
-    if(v)utter.voice=v;
-    utter.onstart=()=>{tevaSpeaking=true;if(lastMsg)lastMsg.classList.add('speaking')};
-    utter.onend=()=>{setTimeout(()=>speakChunk(i+1),50)};
-    utter.onerror=(e)=>{console.log('TTS error:',e);speakChunk(i+1)};
-    /* Chrome bug fix: resume speechSynthesis if paused */
+    const u=new SpeechSynthesisUtterance(chunks[i]);
+    u.lang='es-MX';u.rate=1.05;u.pitch=1.1;u.volume=1;
+    const v=tevaVoices.find(v=>v.lang==='es-MX'&&v.name.includes('Paulina'))||tevaVoices.find(v=>v.lang==='es-MX')||tevaVoices.find(v=>v.lang.startsWith('es'));
+    if(v)u.voice=v;
+    u.onstart=()=>{tevaSpeaking=true;if(lastMsg)lastMsg.classList.add('speaking')};
+    u.onend=()=>setTimeout(()=>speakChunk(i+1),50);
+    u.onerror=()=>speakChunk(i+1);
     if(speechSynthesis.paused)speechSynthesis.resume();
-    speechSynthesis.speak(utter);
-    /* Chrome bug: keeps-alive workaround - prevent auto-pause */
-    if(i===0){window._tevaTtsInterval=setInterval(()=>{if(speechSynthesis.speaking&&!speechSynthesis.paused)return;if(speechSynthesis.paused)speechSynthesis.resume()},5000)}
+    speechSynthesis.speak(u);
+    if(i===0)window._tevaTts=setInterval(()=>{if(speechSynthesis.paused)speechSynthesis.resume()},5000);
   }
-  /* Clear any previous keep-alive */
-  if(window._tevaTtsInterval){clearInterval(window._tevaTtsInterval);window._tevaTtsInterval=null}
+  if(window._tevaTts){clearInterval(window._tevaTts);window._tevaTts=null}
   speakChunk(0);
 }
-function tevaToggleVoice(btn){
-  tevaVoiceOn=!tevaVoiceOn;
-  btn.classList.toggle('on',tevaVoiceOn);
-  btn.innerHTML=tevaVoiceOn?'🔊 VOZ':'🔇 MUDO';
-  if(!tevaVoiceOn){speechSynthesis.cancel();tevaSpeaking=false}
-}
 
-/* SPEECH-TO-TEXT */
+function tevaToggleVoice(btn){tevaVoiceOn=!tevaVoiceOn;btn.classList.toggle('on',tevaVoiceOn);btn.innerHTML=tevaVoiceOn?'🔊 VOZ':'🔇 MUDO';if(!tevaVoiceOn){speechSynthesis.cancel();tevaSpeaking=false}}
+
+/* STT */
 let tevaRecognition=null,tevaIsRecording=false;
 function tevaVoiceInput(){
-  if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){
-    tevaAddMsg('bot','Tu navegador no soporta voz. Usa Chrome para esta función.');return;
-  }
+  if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){tevaAddMsg('bot','Tu navegador no soporta voz. Usa Chrome.');return}
   const mic=document.getElementById('tevaMic');
   if(tevaIsRecording){tevaRecognition.stop();return}
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  tevaRecognition=new SR();
-  tevaRecognition.lang='es-MX';tevaRecognition.interimResults=true;tevaRecognition.continuous=false;
+  tevaRecognition=new SR();tevaRecognition.lang='es-MX';tevaRecognition.interimResults=true;
   const inp=document.getElementById('tevaInput');
   tevaRecognition.onstart=()=>{tevaIsRecording=true;mic.classList.add('recording');inp.placeholder='Escuchando...'};
-  tevaRecognition.onresult=(e)=>{
-    let transcript='';
-    for(let i=e.resultIndex;i<e.results.length;i++)transcript+=e.results[i][0].transcript;
-    inp.value=transcript;
-  };
-  tevaRecognition.onend=()=>{
-    tevaIsRecording=false;mic.classList.remove('recording');inp.placeholder='Escribe o habla...';
-    if(inp.value.trim())tevaSend();
-  };
-  tevaRecognition.onerror=(e)=>{tevaIsRecording=false;mic.classList.remove('recording');inp.placeholder='Escribe o habla...'};
+  tevaRecognition.onresult=e=>{let t='';for(let i=e.resultIndex;i<e.results.length;i++)t+=e.results[i][0].transcript;inp.value=t};
+  tevaRecognition.onend=()=>{tevaIsRecording=false;mic.classList.remove('recording');inp.placeholder='Escribe o habla...';if(inp.value.trim())tevaSend()};
+  tevaRecognition.onerror=()=>{tevaIsRecording=false;mic.classList.remove('recording');inp.placeholder='Escribe o habla...'};
   tevaRecognition.start();
 }
+
 function tevaOpen(){document.getElementById('tevaChatBtn').style.display='none';document.getElementById('tevaChat').style.display='flex';document.getElementById('tevaInput').focus()}
 function tevaClose(){document.getElementById('tevaChat').style.display='none';document.getElementById('tevaChatBtn').style.display='flex'}
 function tevaAddMsg(role,text,imgSrc){
-  const d=document.getElementById('tevaMsgs');const m=document.createElement('div');
+  const d=document.getElementById('tevaMsgs'),m=document.createElement('div');
   m.className='tc-msg '+(role==='user'?'user':'bot');
-  let html=text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img class="tc-img" src="$2" alt="$1" loading="lazy">').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" style="color:var(--gold);text-decoration:underline">$1</a>').replace(/\n/g,'<br>');
+  let html=text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img class="tc-img" src="$2" alt="$1" loading="lazy">').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank">$1</a>').replace(/\n/g,'<br>');
   if(imgSrc)html='<img class="tc-img" src="'+imgSrc+'"><br>'+html;
   m.innerHTML=html;d.appendChild(m);d.scrollTop=d.scrollHeight;
 }
 function tevaAttach(input){
   const file=input.files[0];if(!file)return;
   const reader=new FileReader();
-  reader.onload=function(e){
-    tevaPendingImg=e.target.result;
-    const prev=document.getElementById('tevaImgPrev');if(prev)prev.remove();
-    const p=document.createElement('div');p.className='tc-img-preview';p.id='tevaImgPrev';
-    p.innerHTML='<img src="'+tevaPendingImg+'"><span>Imagen adjunta</span><span class="tc-img-remove" onclick="tevaRemoveImg()">✕</span>';
-    document.querySelector('#tevaChat .tc-input').insertAdjacentElement('beforebegin',p);
-  };reader.readAsDataURL(file);input.value='';
+  reader.onload=e=>{tevaPendingImg=e.target.result;const p=document.createElement('div');p.className='tc-img-preview';p.id='tevaImgPrev';p.innerHTML='<img src="'+tevaPendingImg+'"><span>Imagen</span><span class="tc-img-remove" onclick="tevaRemoveImg()">✕</span>';document.querySelector('#tevaChat .tc-input').insertAdjacentElement('beforebegin',p)};
+  reader.readAsDataURL(file);input.value='';
 }
 function tevaRemoveImg(){tevaPendingImg=null;const p=document.getElementById('tevaImgPrev');if(p)p.remove()}
 async function tevaSend(){
   const inp=document.getElementById('tevaInput'),btn=document.getElementById('tevaSendBtn');
-  const txt=inp.value.trim();const img=tevaPendingImg;
+  const txt=inp.value.trim(),img=tevaPendingImg;
   if(!txt&&!img)return;
   inp.value='';btn.disabled=true;tevaRemoveImg();
-  const displayTxt=txt||(img?'[Imagen enviada]':'');
-  tevaAddMsg('user',displayTxt,img);
-  let content=txt;
-  if(img)content=(txt?txt+'\n\n':'')+'[El asesor adjuntó una imagen del proyecto/propiedad]';
-  tevaMessages.push({role:'user',content:content});
-  tevaPendingImg=null;
-  const d=document.getElementById('tevaMsgs');
-  const typ=document.createElement('div');typ.className='tc-typing';typ.innerHTML='<span></span><span></span><span></span>';d.appendChild(typ);d.scrollTop=d.scrollHeight;
+  tevaAddMsg('user',txt||(img?'[Imagen]':''),img);
+  let content=txt;if(img)content=(txt?txt+'\n\n':'')+'[Imagen adjunta]';
+  tevaMessages.push({role:'user',content});tevaPendingImg=null;
+  const d=document.getElementById('tevaMsgs'),typ=document.createElement('div');
+  typ.className='tc-typing';typ.innerHTML='<span></span><span></span><span></span>';d.appendChild(typ);d.scrollTop=d.scrollHeight;
   try{
     const r=await fetch(TEVA_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:tevaMessages})});
     const data=await r.json();typ.remove();
-    const reply=data.reply||data.error||'Error de conexión. Llama directo al 612-128-4433.';
+    const reply=data.reply||data.error||'Error. Llama al 612-128-4433.';
     tevaMessages.push({role:'assistant',content:reply});
-    tevaAddMsg('bot',reply);
-    tevaSpeak(reply);
-  }catch(e){typ.remove();tevaAddMsg('bot','Error de conexión. Contacta directo a Global Real Estate: <strong>612-128-4433</strong>')}
+    tevaAddMsg('bot',reply);tevaSpeak(reply);
+  }catch(e){typ.remove();tevaAddMsg('bot','Error de conexión. Contacta: <strong>612-128-4433</strong>')}
   btn.disabled=false;inp.focus();
 }
+
+// Auto-show bubble after 5s
+setTimeout(()=>{
+  const btn=document.getElementById('tevaChatBtn');
+  if(btn.style.display!=='none'){
+    const bubble=document.createElement('div');
+    bubble.style.cssText='position:absolute;top:-40px;right:0;background:rgba(0,0,0,.85);color:var(--gold);padding:6px 12px;border-radius:8px;font-size:11px;white-space:nowrap;border:1px solid var(--gold);animation:fadeIn .5s';
+    bubble.textContent='¿Necesitas info rápida? 💬';
+    btn.style.position='fixed';btn.appendChild(bubble);
+    setTimeout(()=>bubble.remove(),4000);
+  }
+},5000);
 </script>
 </body>
 </html>
