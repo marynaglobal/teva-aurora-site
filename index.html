@@ -964,7 +964,7 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
   <p class="ssub reveal">Descarga y comparte con tus clientes</p>
   <div class="gline reveal"></div>
   <div class="tabs reveal" style="margin-bottom:30px">
-    <button class="tab active" onclick="switchDlTab(this,'dl-docs')">📄 Documentos</button>
+    <button class="tab on" onclick="switchDlTab(this,'dl-docs')">📄 Documentos</button>
     <button class="tab" onclick="switchDlTab(this,'dl-plans')">📐 Planos</button>
     <button class="tab" onclick="switchDlTab(this,'dl-videos')">🎬 Videos</button>
   </div>
@@ -1076,7 +1076,7 @@ window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loa
 (()=>{const c=document.getElementById('particles');for(let i=0;i<30;i++){const p=document.createElement('div');p.className='p';p.style.left=Math.random()*100+'%';p.style.animationDuration=(8+Math.random()*14)+'s';p.style.animationDelay=Math.random()*12+'s';p.style.width=p.style.height=(2+Math.random()*3)+'px';c.appendChild(p)}})();
 
 // HERO ANIM
-function switchDlTab(btn,tabId){document.querySelectorAll('.dl-tab-content').forEach(t=>t.style.display='none');document.getElementById(tabId).style.display='block';btn.closest('.tabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active')}
+function switchDlTab(btn,tabId){document.querySelectorAll('.dl-tab-content').forEach(t=>t.style.display='none');document.getElementById(tabId).style.display='block';btn.closest('.tabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));btn.classList.add('on')}
 function heroAnim(){const t=gsap.timeline();t.to('.hero-welcome',{opacity:1,y:0,duration:1,ease:'power3.out'}).to('.hero-c img',{opacity:1,y:0,duration:1.2,ease:'power3.out'},'-=.5').to('.hero-c .tag',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.8').to('.hero-c .line',{opacity:1,width:60,duration:.6},'-=.4').to('.hero-c .loc',{opacity:1,duration:.5},'-=.2').to('.hero-c .sub',{opacity:1,duration:.5},'-=.2').to('.scroll-arrow',{opacity:1,duration:.4},'-=.1')}
 
 // GSAP
