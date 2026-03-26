@@ -147,6 +147,10 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
 .proj-card.feat{border-color:rgba(197,165,114,.3)}
 .proj-card.feat .proj-card-bg{animation:slowZoom 25s ease-in-out infinite alternate}
 @keyframes slowZoom{0%{transform:scale(1)}100%{transform:scale(1.12)}}
+.proj-card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s}
+.proj-card:hover video{opacity:1}
+.proj-card .play-hint{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.6);border:1px solid var(--gold);color:var(--gold);padding:4px 12px;border-radius:20px;font-size:9px;letter-spacing:2px;text-transform:uppercase;z-index:3;opacity:.7;transition:opacity .3s}
+.proj-card:hover .play-hint{opacity:0}
 
 .partners{display:flex;justify-content:center;gap:50px;align-items:center;padding-top:30px;border-top:1px solid var(--glass-b)}
 .partners img{height:50px;opacity:.9;transition:opacity .3s}
@@ -163,11 +167,11 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
 .loc-ico{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
 .loc-card p{font-size:14px;line-height:1.7}
 
-/* GALLERY */
-.gallery-wrap{max-width:1200px;margin:0 auto 50px}
-.gallery-hero{position:relative;width:100%;height:550px;border-radius:16px;overflow:hidden}
-.gallery-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s}
-.gallery-hero img.on{opacity:1}
+/* GALLERY - CINEMATIC */
+.gallery-wrap{max-width:1400px;margin:0 auto 50px}
+.gallery-hero{position:relative;width:100%;height:70vh;min-height:500px;max-height:800px;border-radius:16px;overflow:hidden;background:#000}
+.gallery-hero img,.gallery-hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease-in-out}
+.gallery-hero img.on,.gallery-hero video.on{opacity:1}
 .gallery-hero .arrow-btn{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;background:rgba(0,0,0,.6);border:1px solid var(--gold);color:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;font-size:18px;transition:all .3s;backdrop-filter:blur(10px)}
 .gallery-hero .arrow-btn:hover{background:var(--gold);color:var(--dark)}
 .gallery-hero .arr-l{left:20px}
@@ -457,14 +461,18 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
         </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" onmouseenter="this.querySelector('video').play()" onmouseleave="this.querySelector('video').pause();this.querySelector('video').currentTime=0">
         <div class="proj-card-bg" style="background-image:url('img/hd_rooftop_sunset.jpg')"></div>
+        <video muted loop playsinline preload="metadata" poster="img/hd_rooftop_sunset.jpg">
+          <source src="vid/rooftop_teva.mp4" type="video/mp4">
+        </video>
         <div class="proj-card-overlay"></div>
         <div class="proj-card-content">
           <h4>6 Pisos + Rooftop</h4>
           <div class="proj-card-brief">Vista al mar</div>
           <div class="proj-card-detail">Edificio de 6 niveles con Roof Top privado equipado: alberca, jacuzzi, BBQ, pergolado y vistas panorámicas al Mar de Cortés.<span class="proj-card-tag">Amenidades</span></div>
         </div>
+        <div class="play-hint">Video</div>
       </div>
 
       <div class="proj-card reveal">
@@ -487,23 +495,41 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
         </div>
       </div>
 
-      <div class="proj-card feat reveal">
+      <div class="proj-card feat reveal" onmouseenter="this.querySelector('video').play()" onmouseleave="this.querySelector('video').pause();this.querySelector('video').currentTime=0">
         <div class="proj-card-bg" style="background-image:url('img/elevador_teva.png')"></div>
+        <video muted loop playsinline preload="metadata" poster="img/elevador_teva.png">
+          <source src="vid/elevador.mp4" type="video/mp4">
+        </video>
         <div class="proj-card-overlay"></div>
         <div class="proj-card-content">
           <h4>Elevador</h4>
           <div class="proj-card-brief">Diferenciador clave</div>
           <div class="proj-card-detail">Uno de los pocos edificios en La Paz con elevador. Acceso cómodo a todos los pisos. Ventaja competitiva frente a otros desarrollos.<span class="proj-card-tag">Exclusivo</span></div>
         </div>
+        <div class="play-hint">Video</div>
       </div>
 
-      <div class="proj-card feat reveal">
+      <div class="proj-card feat reveal" onmouseenter="this.querySelector('video').play()" onmouseleave="this.querySelector('video').pause();this.querySelector('video').currentTime=0">
+        <div class="proj-card-bg" style="background-image:url('img/hd_building_real2.jpg')"></div>
+        <video muted loop playsinline preload="metadata" poster="img/hd_building_real2.jpg">
+          <source src="vid/bodega_teva.mp4" type="video/mp4">
+        </video>
+        <div class="proj-card-overlay"></div>
+        <div class="proj-card-content">
+          <h4>Bodega y Áreas Comunes</h4>
+          <div class="proj-card-brief">Administración incluida</div>
+          <div class="proj-card-detail">Bodega, oficina administrativa y lobby con acabados de lujo. Gestión profesional del condominio incluida.<span class="proj-card-tag">Incluido</span></div>
+        </div>
+        <div class="play-hint">Video</div>
+      </div>
+
+      <div class="proj-card reveal">
         <div class="proj-card-bg" style="background-image:url('img/parking_plan.png')"></div>
         <div class="proj-card-overlay"></div>
         <div class="proj-card-content">
           <h4>Estacionamiento</h4>
           <div class="proj-card-brief">Planta baja</div>
-          <div class="proj-card-detail">Cajones asignados para cada unidad en planta baja. Acceso seguro y directo al lobby. Plano disponible en Descargas.<span class="proj-card-tag">Incluido</span></div>
+          <div class="proj-card-detail">Cajones asignados para cada unidad en planta baja. Acceso seguro y directo al lobby.<span class="proj-card-tag">Incluido</span></div>
         </div>
       </div>
 
@@ -554,25 +580,29 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
     <div class="gallery-hero" id="galHero">
       <img src="img/hd_interior_living.jpg" alt="Sala" class="on">
       <img src="img/terraza_teva_hd.png" alt="Terraza HD">
-      <img src="img/balcony.jpg" alt="Balcón">
+      <video muted loop playsinline preload="metadata" src="vid/rooftop_teva.mp4"></video>
       <img src="img/kitchen_teva.png" alt="Cocina">
+      <img src="img/balcony.jpg" alt="Balcón">
+      <video muted loop playsinline preload="metadata" src="vid/elevador.mp4"></video>
       <img src="img/bedroom.jpg" alt="Recámara">
       <img src="img/terraza_teva_new1.png" alt="Terraza Atardecer">
-      <img src="img/hd_interior2.jpg" alt="Interior">
+      <video muted loop playsinline preload="metadata" src="vid/bodega_teva.mp4"></video>
       <img src="img/hd_rooftop_sunset.jpg" alt="Rooftop">
       <div class="arrow-btn arr-l" onclick="galNav(-1)">‹</div>
       <div class="arrow-btn arr-r" onclick="galNav(1)">›</div>
-      <div class="counter" id="galCount">1 / 8</div>
+      <div class="counter" id="galCount">1 / 10</div>
     </div>
     <div class="thumbstrip" id="thumbs">
       <img src="img/hd_interior_living.jpg" class="on" onclick="galGo(0)">
       <img src="img/terraza_teva_hd.png" onclick="galGo(1)">
-      <img src="img/balcony.jpg" onclick="galGo(2)">
+      <img src="img/hd_rooftop_sunset.jpg" onclick="galGo(2)" style="border:1px solid var(--gold)">
       <img src="img/kitchen_teva.png" onclick="galGo(3)">
-      <img src="img/bedroom.jpg" onclick="galGo(4)">
-      <img src="img/terraza_teva_new1.png" onclick="galGo(5)">
-      <img src="img/hd_interior2.jpg" onclick="galGo(6)">
-      <img src="img/hd_rooftop_sunset.jpg" onclick="galGo(7)">
+      <img src="img/balcony.jpg" onclick="galGo(4)">
+      <img src="img/elevador_teva.png" onclick="galGo(5)" style="border:1px solid var(--gold)">
+      <img src="img/bedroom.jpg" onclick="galGo(6)">
+      <img src="img/terraza_teva_new1.png" onclick="galGo(7)">
+      <img src="img/hd_building_real2.jpg" onclick="galGo(8)" style="border:1px solid var(--gold)">
+      <img src="img/hd_rooftop_sunset.jpg" onclick="galGo(9)">
     </div>
   </div>
   <div class="acabados">
@@ -937,10 +967,18 @@ const dotEls=dotsC.querySelectorAll('a');
 window.addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{const el=document.getElementById(s);if(el&&scrollY>=el.offsetTop-300)cur=s});dotEls.forEach(d=>{d.classList.toggle('on',d.getAttribute('href')==='#'+cur)});document.getElementById('topnav').classList.toggle('scrolled',scrollY>100)});
 
 // GALLERY
-let gIdx=0;const gImgs=document.querySelectorAll('#galHero img'),gThumbs=document.querySelectorAll('#thumbs img'),gCount=document.getElementById('galCount');
-function galGo(i){gIdx=i;gImgs.forEach((m,j)=>m.classList.toggle('on',j===i));gThumbs.forEach((t,j)=>t.classList.toggle('on',j===i));gCount.textContent=(i+1)+' / '+gImgs.length}
-function galNav(d){galGo((gIdx+d+gImgs.length)%gImgs.length)}
-setInterval(()=>galNav(1),5000);
+let gIdx=0;const gSlides=document.querySelectorAll('#galHero > img, #galHero > video'),gThumbs=document.querySelectorAll('#thumbs img'),gCount=document.getElementById('galCount');
+function galGo(i){
+  gSlides.forEach((m,j)=>{
+    const isOn=j===i;
+    m.classList.toggle('on',isOn);
+    if(m.tagName==='VIDEO'){isOn?m.play():( m.pause(), m.currentTime=0)}
+  });
+  gThumbs.forEach((t,j)=>t.classList.toggle('on',j===i));
+  gIdx=i;gCount.textContent=(i+1)+' / '+gSlides.length;
+}
+function galNav(d){galGo((gIdx+d+gSlides.length)%gSlides.length)}
+setInterval(()=>galNav(1),6000);
 
 // TABS
 function swTab(t,btn){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));document.querySelectorAll('.tc').forEach(c=>c.classList.remove('on'));btn.classList.add('on');document.getElementById('tc-'+t).classList.add('on')}
