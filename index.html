@@ -130,27 +130,24 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
 
 /* PROJECT FEATURES */
 /* INTERACTIVE PROJECT CARDS */
-.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;margin:0 auto 50px}
-.proj-card{position:relative;height:300px;border-radius:14px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,.08);transition:all .5s cubic-bezier(.25,.8,.25,1)}
-.proj-card:hover{border-color:var(--gold);transform:translateY(-8px);box-shadow:0 25px 60px rgba(197,165,114,.2)}
-.proj-card-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 8s ease-out}
-.proj-card:hover .proj-card-bg{transform:scale(1.2)}
-.proj-card-overlay{position:absolute;inset:0;background:linear-gradient(transparent 20%,rgba(0,0,0,.88) 70%);z-index:1;transition:background .5s}
-.proj-card:hover .proj-card-overlay{background:linear-gradient(rgba(0,0,0,.2) 0%,rgba(0,0,0,.92) 55%)}
-.proj-card-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;z-index:2}
-.proj-card h4{font-family:'Playfair Display',serif;font-size:20px;color:var(--white);letter-spacing:1px;margin-bottom:4px;transition:all .4s}
-.proj-card:hover h4{color:var(--gold);transform:translateY(-4px)}
-.proj-card-brief{font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:500;transition:all .4s}
-.proj-card-detail{font-size:13px;color:rgba(255,255,255,.85);line-height:1.7;max-height:0;opacity:0;overflow:hidden;transition:all .6s cubic-bezier(.25,.8,.25,1);margin-top:0}
-.proj-card:hover .proj-card-detail{max-height:150px;opacity:1;margin-top:12px}
-.proj-card-tag{display:inline-block;padding:4px 14px;background:rgba(197,165,114,.15);border:1px solid var(--gold);border-radius:20px;font-size:9px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-top:10px}
-.proj-card.feat{border-color:rgba(197,165,114,.3)}
-.proj-card.feat .proj-card-bg{animation:slowZoom 25s ease-in-out infinite alternate}
+.proj-showcase{max-width:1300px;margin:0 auto 60px;display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:18px;overflow:hidden;border:1px solid rgba(197,165,114,.15);min-height:500px}
+.proj-preview{position:relative;overflow:hidden;background:#111}
+.proj-preview img,.proj-preview video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease}
+.proj-preview img.active,.proj-preview video.active{opacity:1}
+.proj-feature-list{background:rgba(10,10,10,.95);padding:0;display:flex;flex-direction:column}
+.proj-item{padding:28px 36px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .4s ease;position:relative;overflow:hidden}
+.proj-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);transform:scaleY(0);transition:transform .4s ease;transform-origin:top}
+.proj-item:hover,.proj-item.active{background:rgba(197,165,114,.06)}
+.proj-item:hover::before,.proj-item.active::before{transform:scaleY(1)}
+.proj-item h4{font-family:'Playfair Display',serif;font-size:18px;color:var(--white);letter-spacing:1px;margin:0 0 4px;transition:color .3s}
+.proj-item:hover h4,.proj-item.active h4{color:var(--gold)}
+.proj-item-brief{font-size:10px;color:var(--gold);letter-spacing:2.5px;text-transform:uppercase;font-weight:500;opacity:.7}
+.proj-item-desc{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;max-height:0;opacity:0;overflow:hidden;transition:all .5s ease;margin-top:0}
+.proj-item.active .proj-item-desc{max-height:100px;opacity:1;margin-top:10px}
+.proj-item .vid-badge{display:inline-block;margin-left:10px;font-size:9px;color:var(--gold);letter-spacing:1.5px;border:1px solid rgba(197,165,114,.4);padding:2px 8px;border-radius:10px;vertical-align:middle}
 @keyframes slowZoom{0%{transform:scale(1)}100%{transform:scale(1.12)}}
-.proj-card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s}
-.proj-card:hover video{opacity:1}
-.proj-card .play-hint{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.6);border:1px solid var(--gold);color:var(--gold);padding:4px 12px;border-radius:20px;font-size:9px;letter-spacing:2px;text-transform:uppercase;z-index:3;opacity:.7;transition:opacity .3s}
-.proj-card:hover .play-hint{opacity:0}
+.proj-item-num{font-family:'Playfair Display',serif;font-size:32px;color:rgba(197,165,114,.15);position:absolute;right:30px;top:50%;transform:translateY(-50%);transition:color .3s}
+.proj-item.active .proj-item-num,.proj-item:hover .proj-item-num{color:rgba(197,165,114,.3)}
 
 .partners{display:flex;justify-content:center;gap:50px;align-items:center;padding-top:30px;border-top:1px solid var(--glass-b)}
 .partners img{height:50px;opacity:.9;transition:opacity .3s}
@@ -303,8 +300,8 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
   .loc-grid{grid-template-columns:1fr}
 }
 @media(max-width:768px){
-  .proj-grid{grid-template-columns:1fr}
-  .proj-card.feat{grid-column:span 1}
+  .proj-showcase{grid-template-columns:1fr;min-height:auto}
+  .proj-preview{height:300px}
   .split-sec{flex-direction:column}
   .split-txt{padding:50px 40px}
   .stats{grid-template-columns:1fr;max-width:400px;margin:0 auto}
@@ -444,107 +441,73 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
 </section>
 
 <!-- 7. PROYECTO -->
-<section class="full-img" id="proyecto">
-  <div class="bg kb kb1" style="background-image:url('img/hd_building_real.jpg')"></div>
-  <div class="dark"></div>
-  <div class="c">
-    <h2 class="reveal" style="font-size:clamp(40px,6vw,72px);letter-spacing:6px">TEVA BY AURORA</h2>
-    <p class="reveal" style="font-family:'Playfair Display',serif;font-size:clamp(18px,2.5vw,30px);color:var(--gold);font-style:italic;margin:10px 0 35px">La Joya del Malecón</p>
+<section class="sec sec-dark" id="proyecto" style="padding:80px 4%">
+  <div style="max-width:1300px;margin:0 auto">
+    <h2 class="stitle reveal" style="font-size:clamp(36px,5vw,60px);letter-spacing:6px">TEVA BY AURORA</h2>
+    <p class="ssub reveal" style="font-family:'Playfair Display',serif;font-size:clamp(16px,2vw,24px);color:var(--gold);font-style:italic;margin-bottom:50px">La Joya del Malecón</p>
     <div class="gline reveal"></div>
-    <div class="proj-grid">
 
-      <div class="proj-card reveal">
-        <div class="proj-card-bg" style="background-image:url('img/hd_render1.jpg')"></div>
-        <div class="proj-card-overlay"></div>
-        <div class="proj-card-content">
+    <div class="proj-showcase reveal" id="projShowcase">
+      <div class="proj-preview" id="projPreview">
+        <img src="img/hd_render1.jpg" alt="10 Condominios" class="active" data-idx="0">
+        <video muted loop playsinline preload="metadata" poster="img/hd_rooftop_sunset.jpg" data-idx="1"><source src="vid/rooftop_teva.mp4" type="video/mp4"></video>
+        <img src="img/hd_beach.jpg" alt="Malecón" data-idx="2">
+        <img src="img/terraza_teva_hd.png" alt="Terraza" data-idx="3">
+        <video muted loop playsinline preload="metadata" poster="img/elevador_teva.png" data-idx="4"><source src="vid/elevador.mp4" type="video/mp4"></video>
+        <video muted loop playsinline preload="metadata" poster="img/hd_building_real2.jpg" data-idx="5"><source src="vid/bodega_teva.mp4" type="video/mp4"></video>
+        <img src="img/parking_plan.png" alt="Estacionamiento" data-idx="6">
+        <img src="img/kitchen_teva.png" alt="Acabados" data-idx="7">
+      </div>
+      <div class="proj-feature-list" id="projList">
+        <div class="proj-item active" data-idx="0">
           <h4>10 Condominios</h4>
-          <div class="proj-card-brief">Exclusividad total</div>
-          <div class="proj-card-detail">Solo 10 unidades de lujo en todo el edificio. Privacidad, exclusividad y plusvalía garantizada para cada propietario.<span class="proj-card-tag">Premium</span></div>
+          <div class="proj-item-brief">Exclusividad total</div>
+          <div class="proj-item-desc">Solo 10 unidades de lujo. Privacidad, exclusividad y plusvalía garantizada.</div>
+          <span class="proj-item-num">01</span>
         </div>
-      </div>
-
-      <div class="proj-card reveal" onmouseenter="this.querySelector('video').play()" onmouseleave="this.querySelector('video').pause();this.querySelector('video').currentTime=0">
-        <div class="proj-card-bg" style="background-image:url('img/hd_rooftop_sunset.jpg')"></div>
-        <video muted loop playsinline preload="metadata" poster="img/hd_rooftop_sunset.jpg">
-          <source src="vid/rooftop_teva.mp4" type="video/mp4">
-        </video>
-        <div class="proj-card-overlay"></div>
-        <div class="proj-card-content">
-          <h4>6 Pisos + Rooftop</h4>
-          <div class="proj-card-brief">Vista al mar</div>
-          <div class="proj-card-detail">Edificio de 6 niveles con Roof Top privado equipado: alberca, jacuzzi, BBQ, pergolado y vistas panorámicas al Mar de Cortés.<span class="proj-card-tag">Amenidades</span></div>
+        <div class="proj-item" data-idx="1">
+          <h4>6 Pisos + Rooftop <span class="vid-badge">Video</span></h4>
+          <div class="proj-item-brief">Vista al mar</div>
+          <div class="proj-item-desc">Roof Top privado con alberca, jacuzzi, BBQ, pergolado y vistas al Mar de Cortés.</div>
+          <span class="proj-item-num">02</span>
         </div>
-        <div class="play-hint">Video</div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-card-bg" style="background-image:url('img/hd_beach.jpg')"></div>
-        <div class="proj-card-overlay"></div>
-        <div class="proj-card-content">
+        <div class="proj-item" data-idx="2">
           <h4>A 2 Cuadras del Malecón</h4>
-          <div class="proj-card-brief">Ubicación estratégica</div>
-          <div class="proj-card-detail">Camina al icónico Malecón de La Paz en solo 2 minutos. Restaurantes, marina, cultura y vida nocturna a tu puerta.<span class="proj-card-tag">Ubicación</span></div>
+          <div class="proj-item-brief">Ubicación estratégica</div>
+          <div class="proj-item-desc">Restaurantes, marina, cultura y vida nocturna a 2 minutos caminando.</div>
+          <span class="proj-item-num">03</span>
         </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-card-bg" style="background-image:url('img/terraza_teva_hd.png')"></div>
-        <div class="proj-card-overlay"></div>
-        <div class="proj-card-content">
+        <div class="proj-item" data-idx="3">
           <h4>2 Recámaras + Terraza</h4>
-          <div class="proj-card-brief">2 Baños completos</div>
-          <div class="proj-card-detail">Cada unidad incluye 2 recámaras amplias, 2 baños completos y terraza privada con vista. Diseño optimizado para vivir o rentar.<span class="proj-card-tag">Distribución</span></div>
+          <div class="proj-item-brief">2 Baños completos</div>
+          <div class="proj-item-desc">Amplias recámaras, 2 baños completos y terraza privada con vista.</div>
+          <span class="proj-item-num">04</span>
         </div>
-      </div>
-
-      <div class="proj-card feat reveal" onmouseenter="this.querySelector('video').play()" onmouseleave="this.querySelector('video').pause();this.querySelector('video').currentTime=0">
-        <div class="proj-card-bg" style="background-image:url('img/elevador_teva.png')"></div>
-        <video muted loop playsinline preload="metadata" poster="img/elevador_teva.png">
-          <source src="vid/elevador.mp4" type="video/mp4">
-        </video>
-        <div class="proj-card-overlay"></div>
-        <div class="proj-card-content">
-          <h4>Elevador</h4>
-          <div class="proj-card-brief">Diferenciador clave</div>
-          <div class="proj-card-detail">Uno de los pocos edificios en La Paz con elevador. Acceso cómodo a todos los pisos. Ventaja competitiva frente a otros desarrollos.<span class="proj-card-tag">Exclusivo</span></div>
+        <div class="proj-item" data-idx="4">
+          <h4>Elevador <span class="vid-badge">Video</span></h4>
+          <div class="proj-item-brief">Diferenciador clave</div>
+          <div class="proj-item-desc">Uno de los pocos edificios en La Paz con elevador. Acceso cómodo a todos los pisos.</div>
+          <span class="proj-item-num">05</span>
         </div>
-        <div class="play-hint">Video</div>
-      </div>
-
-      <div class="proj-card feat reveal" onmouseenter="this.querySelector('video').play()" onmouseleave="this.querySelector('video').pause();this.querySelector('video').currentTime=0">
-        <div class="proj-card-bg" style="background-image:url('img/hd_building_real2.jpg')"></div>
-        <video muted loop playsinline preload="metadata" poster="img/hd_building_real2.jpg">
-          <source src="vid/bodega_teva.mp4" type="video/mp4">
-        </video>
-        <div class="proj-card-overlay"></div>
-        <div class="proj-card-content">
-          <h4>Bodega y Áreas Comunes</h4>
-          <div class="proj-card-brief">Administración incluida</div>
-          <div class="proj-card-detail">Bodega, oficina administrativa y lobby con acabados de lujo. Gestión profesional del condominio incluida.<span class="proj-card-tag">Incluido</span></div>
+        <div class="proj-item" data-idx="5">
+          <h4>Bodega y Áreas Comunes <span class="vid-badge">Video</span></h4>
+          <div class="proj-item-brief">Administración incluida</div>
+          <div class="proj-item-desc">Bodega, lobby de lujo y gestión profesional del condominio incluida.</div>
+          <span class="proj-item-num">06</span>
         </div>
-        <div class="play-hint">Video</div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-card-bg" style="background-image:url('img/parking_plan.png')"></div>
-        <div class="proj-card-overlay"></div>
-        <div class="proj-card-content">
+        <div class="proj-item" data-idx="6">
           <h4>Estacionamiento</h4>
-          <div class="proj-card-brief">Planta baja</div>
-          <div class="proj-card-detail">Cajones asignados para cada unidad en planta baja. Acceso seguro y directo al lobby.<span class="proj-card-tag">Incluido</span></div>
+          <div class="proj-item-brief">Planta baja</div>
+          <div class="proj-item-desc">Cajones asignados en planta baja. Acceso seguro y directo al lobby.</div>
+          <span class="proj-item-num">07</span>
         </div>
-      </div>
-
-      <div class="proj-card reveal">
-        <div class="proj-card-bg" style="background-image:url('img/kitchen_teva.png')"></div>
-        <div class="proj-card-overlay"></div>
-        <div class="proj-card-content">
+        <div class="proj-item" data-idx="7">
           <h4>Acabados de Lujo</h4>
-          <div class="proj-card-brief">Materiales selectos</div>
-          <div class="proj-card-detail">Cocina de granito, puerta principal de Parota, piso de mármol, aluminio línea español. Cada detalle pensado para el mercado premium.<span class="proj-card-tag">Calidad</span></div>
+          <div class="proj-item-brief">Materiales selectos</div>
+          <div class="proj-item-desc">Granito, Parota, mármol, aluminio español. Cada detalle pensado para el mercado premium.</div>
+          <span class="proj-item-num">08</span>
         </div>
       </div>
-
     </div>
 
     <div class="partners reveal">
@@ -981,6 +944,28 @@ function galGo(i){
 }
 function galNav(d){galGo((gIdx+d+gSlides.length)%gSlides.length)}
 setInterval(()=>galNav(1),6000);
+
+// PROYECTO SHOWCASE
+(function(){
+  const items=document.querySelectorAll('#projList .proj-item');
+  const media=document.querySelectorAll('#projPreview img, #projPreview video');
+  let current=0;
+  function showItem(idx){
+    items.forEach(i=>i.classList.remove('active'));
+    items[idx].classList.add('active');
+    media.forEach(m=>{
+      const isOn=parseInt(m.dataset.idx)===idx;
+      m.classList.toggle('active',isOn);
+      if(m.tagName==='VIDEO'){isOn?m.play():(m.pause(),m.currentTime=0)}
+    });
+    current=idx;
+  }
+  items.forEach((item,i)=>{
+    item.addEventListener('mouseenter',()=>showItem(i));
+    item.addEventListener('click',()=>showItem(i));
+  });
+  setInterval(()=>{showItem((current+1)%items.length)},5000);
+})();
 
 // TABS
 function swTab(t,btn){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));document.querySelectorAll('.tc').forEach(c=>c.classList.remove('on'));btn.classList.add('on');document.getElementById('tc-'+t).classList.add('on')}
