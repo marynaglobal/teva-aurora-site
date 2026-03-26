@@ -1230,29 +1230,52 @@ const TEVA_API='https://lwhutsswaddvzyboiwlb.supabase.co/functions/v1/teva-ai-ch
 let tevaMessages=[],tevaPendingImg=null,tevaVoiceOn=true,tevaSpeaking=false;
 
 /* TEXT-TO-SPEECH */
+let tevaVoices=[];
+function tevaLoadVoices(){
+  if(!('speechSynthesis' in window))return;
+  tevaVoices=speechSynthesis.getVoices();
+  if(!tevaVoices.length){speechSynthesis.addEventListener('voiceschanged',()=>{tevaVoices=speechSynthesis.getVoices()},{once:true})}
+}
+tevaLoadVoices();
+
 function tevaSpeak(text){
   if(!tevaVoiceOn||!('speechSynthesis' in window))return;
-  window.speechSynthesis.cancel();
-  const clean=text.replace(/!\[.*?\]\(.*?\)/g,'').replace(/\[([^\]]+)\]\(.*?\)/g,'$1').replace(/\*\*/g,'').replace(/<[^>]+>/g,'');
-  const utter=new SpeechSynthesisUtterance(clean);
-  utter.lang='es-MX';utter.rate=1.05;utter.pitch=1.1;
-  const voices=speechSynthesis.getVoices();
-  const mxVoice=voices.find(v=>v.lang==='es-MX'&&v.name.includes('female'))||voices.find(v=>v.lang==='es-MX')||voices.find(v=>v.lang.startsWith('es'));
-  if(mxVoice)utter.voice=mxVoice;
+  speechSynthesis.cancel();
+  if(!tevaVoices.length)tevaVoices=speechSynthesis.getVoices();
+  const clean=text.replace(/!\[.*?\]\(.*?\)/g,'').replace(/\[([^\]]+)\]\(.*?\)/g,'$1').replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/\n/g,'. ');
+  /* Split long text into chunks (Chrome stops at ~200 chars) */
+  const chunks=[];
+  const sentences=clean.split(/(?<=[.!?])\s+/);
+  let current='';
+  for(const s of sentences){
+    if((current+' '+s).length>150){if(current)chunks.push(current);current=s}
+    else current=current?current+' '+s:s;
+  }
+  if(current)chunks.push(current);
+  if(!chunks.length)chunks.push(clean);
+
   const msgs=document.querySelectorAll('.tc-msg.bot');
   const lastMsg=msgs[msgs.length-1];
-  utter.onstart=()=>{tevaSpeaking=true;if(lastMsg)lastMsg.classList.add('speaking')};
-  utter.onend=()=>{tevaSpeaking=false;if(lastMsg)lastMsg.classList.remove('speaking')};
-  speechSynthesis.speak(utter);
+
+  function speakChunk(i){
+    if(i>=chunks.length){tevaSpeaking=false;if(lastMsg)lastMsg.classList.remove('speaking');return}
+    const utter=new SpeechSynthesisUtterance(chunks[i]);
+    utter.lang='es-MX';utter.rate=1.0;utter.pitch=1.1;
+    const v=tevaVoices.find(v=>v.lang==='es-MX')||tevaVoices.find(v=>v.lang==='es-ES')||tevaVoices.find(v=>v.lang.startsWith('es'));
+    if(v)utter.voice=v;
+    utter.onstart=()=>{tevaSpeaking=true;if(lastMsg)lastMsg.classList.add('speaking')};
+    utter.onend=()=>speakChunk(i+1);
+    utter.onerror=()=>speakChunk(i+1);
+    speechSynthesis.speak(utter);
+  }
+  speakChunk(0);
 }
 function tevaToggleVoice(btn){
   tevaVoiceOn=!tevaVoiceOn;
   btn.classList.toggle('on',tevaVoiceOn);
   btn.innerHTML=tevaVoiceOn?'🔊 VOZ':'🔇 MUDO';
-  if(!tevaVoiceOn)window.speechSynthesis.cancel();
+  if(!tevaVoiceOn){speechSynthesis.cancel();tevaSpeaking=false}
 }
-/* Preload voices */
-if('speechSynthesis' in window)speechSynthesis.getVoices();
 
 /* SPEECH-TO-TEXT */
 let tevaRecognition=null,tevaIsRecording=false;
