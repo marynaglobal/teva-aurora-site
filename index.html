@@ -963,10 +963,16 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
   <h2 class="stitle reveal">Material para Asesores</h2>
   <p class="ssub reveal">Descarga y comparte con tus clientes</p>
   <div class="gline reveal"></div>
+  <div class="tabs reveal" style="margin-bottom:30px">
+    <button class="tab active" onclick="switchDlTab(this,'dl-docs')">📄 Documentos</button>
+    <button class="tab" onclick="switchDlTab(this,'dl-plans')">📐 Planos</button>
+    <button class="tab" onclick="switchDlTab(this,'dl-videos')">🎬 Videos</button>
+  </div>
+  <div id="dl-docs" class="dl-tab-content">
   <div class="dl-grid">
     <div class="dl-card reveal">
       <div class="dl-title">Folleto TEVA (Sin Logo)</div>
-      <div class="dl-desc">Versión en español sin logos</div>
+      <div class="dl-desc">Versión en español sin logos — ponle el logo de tu agencia</div>
       <a href="Folleto_Teva_SL.pdf" download class="dl-btn">Descargar</a>
     </div>
     <div class="dl-card reveal">
@@ -975,13 +981,22 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
       <a href="Brochure_Teva_EN.pdf" download class="dl-btn">Descargar</a>
     </div>
     <div class="dl-card reveal">
+      <div class="dl-title">Galería de Renders</div>
+      <div class="dl-desc">Interiores y exteriores HD</div>
+      <a href="#" class="dl-btn">Próximamente</a>
+    </div>
+  </div>
+  </div>
+  <div id="dl-plans" class="dl-tab-content" style="display:none">
+  <div class="dl-grid">
+    <div class="dl-card reveal">
       <div class="dl-title">Plano TEVA SKY</div>
-      <div class="dl-desc">Layout y dimensiones</div>
+      <div class="dl-desc">108 m² — Layout y dimensiones</div>
       <a href="img/plan_sky.jpg" download class="dl-btn">Descargar</a>
     </div>
     <div class="dl-card reveal">
       <div class="dl-title">Plano TEVA BAY</div>
-      <div class="dl-desc">Layout y dimensiones</div>
+      <div class="dl-desc">127.7 m² — Layout y dimensiones</div>
       <a href="img/plan_bay.jpg" download class="dl-btn">Descargar</a>
     </div>
     <div class="dl-card reveal">
@@ -994,11 +1009,31 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
       <div class="dl-desc">Distribución planta baja</div>
       <a href="img/parking_plan.png" download class="dl-btn">Descargar</a>
     </div>
+  </div>
+  </div>
+  <div id="dl-videos" class="dl-tab-content" style="display:none">
+  <div class="dl-grid">
     <div class="dl-card reveal">
-      <div class="dl-title">Galería de Renders</div>
-      <div class="dl-desc">Interiores y exteriores HD</div>
-      <a href="#" class="dl-btn">Próximamente</a>
+      <div class="dl-title">🎥 Recorrido de Obra</div>
+      <div class="dl-desc">Video completo del avance de construcción</div>
+      <a href="vid/video-recorrido-obra.mp4" download class="dl-btn">Descargar Video</a>
     </div>
+    <div class="dl-card reveal">
+      <div class="dl-title">🎥 Avance de Obra</div>
+      <div class="dl-desc">Actualización más reciente del progreso</div>
+      <a href="vid/video-avance-obra.mp4" download class="dl-btn">Descargar Video</a>
+    </div>
+    <div class="dl-card reveal">
+      <div class="dl-title">🎥 Rooftop Paneo</div>
+      <div class="dl-desc">Vista panorámica del rooftop con vistas a la bahía</div>
+      <a href="vid/roof_paneo.mp4" download class="dl-btn">Descargar Video</a>
+    </div>
+    <div class="dl-card reveal">
+      <div class="dl-title">🎥 Rooftop Zoom</div>
+      <div class="dl-desc">Acercamiento a detalles del rooftop</div>
+      <a href="vid/roof_zoom.mp4" download class="dl-btn">Descargar Video</a>
+    </div>
+  </div>
   </div>
   
 </section>
@@ -1041,6 +1076,7 @@ window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loa
 (()=>{const c=document.getElementById('particles');for(let i=0;i<30;i++){const p=document.createElement('div');p.className='p';p.style.left=Math.random()*100+'%';p.style.animationDuration=(8+Math.random()*14)+'s';p.style.animationDelay=Math.random()*12+'s';p.style.width=p.style.height=(2+Math.random()*3)+'px';c.appendChild(p)}})();
 
 // HERO ANIM
+function switchDlTab(btn,tabId){document.querySelectorAll('.dl-tab-content').forEach(t=>t.style.display='none');document.getElementById(tabId).style.display='block';btn.closest('.tabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active')}
 function heroAnim(){const t=gsap.timeline();t.to('.hero-welcome',{opacity:1,y:0,duration:1,ease:'power3.out'}).to('.hero-c img',{opacity:1,y:0,duration:1.2,ease:'power3.out'},'-=.5').to('.hero-c .tag',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.8').to('.hero-c .line',{opacity:1,width:60,duration:.6},'-=.4').to('.hero-c .loc',{opacity:1,duration:.5},'-=.2').to('.hero-c .sub',{opacity:1,duration:.5},'-=.2').to('.scroll-arrow',{opacity:1,duration:.4},'-=.1')}
 
 // GSAP
@@ -1249,18 +1285,20 @@ tevaLoadVoices();
 function tevaSpeak(text){
   if(!tevaVoiceOn||!('speechSynthesis' in window))return;
   speechSynthesis.cancel();
-  if(!tevaVoices.length)tevaVoices=speechSynthesis.getVoices();
-  const clean=text.replace(/!\[.*?\]\(.*?\)/g,'').replace(/\[([^\]]+)\]\(.*?\)/g,'$1').replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/\n/g,'. ');
-  /* Split long text into chunks (Chrome stops at ~200 chars) */
+  /* Reload voices every time (fixes Chrome bug) */
+  tevaVoices=speechSynthesis.getVoices();
+  const clean=text.replace(/!\[.*?\]\(.*?\)/g,'').replace(/\[([^\]]+)\]\(.*?\)/g,'$1').replace(/\*\*/g,'').replace(/<[^>]+>/g,'').replace(/📄|📐|🎬|🎥|😄|😊|🏗️|🔥|💪|👋|🌊|🏖️|☀️|💰|✅|🏠|📱|📞/g,'').replace(/\n/g,'. ').trim();
+  if(!clean)return;
+  /* Split into small chunks (Chrome stops speaking at ~200 chars) */
   const chunks=[];
   const sentences=clean.split(/(?<=[.!?])\s+/);
   let current='';
   for(const s of sentences){
-    if((current+' '+s).length>150){if(current)chunks.push(current);current=s}
+    if((current+' '+s).length>120){if(current)chunks.push(current);current=s}
     else current=current?current+' '+s:s;
   }
   if(current)chunks.push(current);
-  if(!chunks.length)chunks.push(clean);
+  if(!chunks.length)return;
 
   const msgs=document.querySelectorAll('.tc-msg.bot');
   const lastMsg=msgs[msgs.length-1];
@@ -1268,14 +1306,20 @@ function tevaSpeak(text){
   function speakChunk(i){
     if(i>=chunks.length){tevaSpeaking=false;if(lastMsg)lastMsg.classList.remove('speaking');return}
     const utter=new SpeechSynthesisUtterance(chunks[i]);
-    utter.lang='es-MX';utter.rate=1.0;utter.pitch=1.1;
-    const v=tevaVoices.find(v=>v.lang==='es-MX')||tevaVoices.find(v=>v.lang==='es-ES')||tevaVoices.find(v=>v.lang.startsWith('es'));
+    utter.lang='es-MX';utter.rate=1.05;utter.pitch=1.1;utter.volume=1.0;
+    const v=tevaVoices.find(v=>v.lang==='es-MX'&&v.name.includes('Paulina'))||tevaVoices.find(v=>v.lang==='es-MX')||tevaVoices.find(v=>v.lang==='es-ES')||tevaVoices.find(v=>v.lang.startsWith('es'));
     if(v)utter.voice=v;
     utter.onstart=()=>{tevaSpeaking=true;if(lastMsg)lastMsg.classList.add('speaking')};
-    utter.onend=()=>speakChunk(i+1);
-    utter.onerror=()=>speakChunk(i+1);
+    utter.onend=()=>{setTimeout(()=>speakChunk(i+1),50)};
+    utter.onerror=(e)=>{console.log('TTS error:',e);speakChunk(i+1)};
+    /* Chrome bug fix: resume speechSynthesis if paused */
+    if(speechSynthesis.paused)speechSynthesis.resume();
     speechSynthesis.speak(utter);
+    /* Chrome bug: keeps-alive workaround - prevent auto-pause */
+    if(i===0){window._tevaTtsInterval=setInterval(()=>{if(speechSynthesis.speaking&&!speechSynthesis.paused)return;if(speechSynthesis.paused)speechSynthesis.resume()},5000)}
   }
+  /* Clear any previous keep-alive */
+  if(window._tevaTtsInterval){clearInterval(window._tevaTtsInterval);window._tevaTtsInterval=null}
   speakChunk(0);
 }
 function tevaToggleVoice(btn){
