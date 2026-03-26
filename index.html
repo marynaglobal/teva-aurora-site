@@ -376,6 +376,13 @@ h1,h2,h3,h4{font-family:'Playfair Display',serif;color:var(--white)}
 #tevaChat .tc-input button{background:linear-gradient(135deg,#1a8f3c,#22c55e);border:none;color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:16px;transition:all .3s;display:flex;align-items:center;justify-content:center}
 #tevaChat .tc-input button:hover{transform:scale(1.1)}
 #tevaChat .tc-input button:disabled{opacity:.4;cursor:default;transform:none}
+.tc-attach{color:var(--text-dim);cursor:pointer;display:flex;align-items:center;padding:8px;border-radius:50%;transition:all .3s}
+.tc-attach:hover{color:var(--gold);background:rgba(197,165,114,.1)}
+.tc-msg img.tc-img{max-width:100%;border-radius:8px;margin-top:8px;cursor:pointer}
+.tc-img-preview{display:flex;align-items:center;gap:8px;padding:6px 12px;background:rgba(197,165,114,.1);border-radius:8px;margin-bottom:8px;font-size:11px;color:var(--gold)}
+.tc-img-preview img{width:40px;height:40px;object-fit:cover;border-radius:6px}
+.tc-img-preview .tc-img-remove{cursor:pointer;margin-left:auto;opacity:.6}
+.tc-img-preview .tc-img-remove:hover{opacity:1}
 @media(max-width:480px){#tevaChat{width:calc(100vw - 16px);height:calc(100vh - 80px);bottom:8px;right:8px;border-radius:16px}#tevaChatBtn{bottom:16px;right:16px}}
 </style>
 </head>
@@ -1178,34 +1185,61 @@ document.querySelectorAll('.flr').forEach(r=>{r.addEventListener('mouseenter',()
     <div class="tc-close" onclick="tevaClose()">&times;</div>
   </div>
   <div class="tc-msgs" id="tevaMsgs">
-    <div class="tc-msg bot">Hola, soy <strong>TEVA</strong>, tu asistente AI para el proyecto TEVA by AURORA. Tengo todos los datos: precios, m², amenidades, plan de pagos, mercado. Pregunta lo que necesites, colega.</div>
+    <div class="tc-msg bot">Hola, soy <strong>TEVA</strong>, tu asistente AI del proyecto TEVA by AURORA. Tengo todos los datos: precios, m², amenidades, plan de pagos, comisiones, material en español e inglés.<br><br>Para darte una atención personalizada, <strong>¿cuál es tu nombre y de qué agencia inmobiliaria eres?</strong></div>
   </div>
   <div class="tc-input">
+    <label class="tc-attach" title="Adjuntar imagen">
+      <input type="file" id="tevaFile" accept="image/*" onchange="tevaAttach(this)" style="display:none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+    </label>
     <input type="text" id="tevaInput" placeholder="Escribe tu pregunta..." onkeydown="if(event.key==='Enter')tevaSend()">
     <button id="tevaSendBtn" onclick="tevaSend()">➤</button>
   </div>
 </div>
 <script>
 const TEVA_API='https://lwhutsswaddvzyboiwlb.supabase.co/functions/v1/teva-ai-chat';
-let tevaMessages=[];
-function tevaOpen(){document.getElementById('tevaChatBtn').style.display='none';document.getElementById('tevaChat').style.display='flex'}
+let tevaMessages=[],tevaPendingImg=null;
+function tevaOpen(){document.getElementById('tevaChatBtn').style.display='none';document.getElementById('tevaChat').style.display='flex';document.getElementById('tevaInput').focus()}
 function tevaClose(){document.getElementById('tevaChat').style.display='none';document.getElementById('tevaChatBtn').style.display='flex'}
-function tevaAddMsg(role,text){const d=document.getElementById('tevaMsgs');const m=document.createElement('div');m.className='tc-msg '+(role==='user'?'user':'bot');m.innerHTML=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');d.appendChild(m);d.scrollTop=d.scrollHeight}
+function tevaAddMsg(role,text,imgSrc){
+  const d=document.getElementById('tevaMsgs');const m=document.createElement('div');
+  m.className='tc-msg '+(role==='user'?'user':'bot');
+  let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  if(imgSrc)html='<img class="tc-img" src="'+imgSrc+'"><br>'+html;
+  m.innerHTML=html;d.appendChild(m);d.scrollTop=d.scrollHeight;
+}
+function tevaAttach(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    tevaPendingImg=e.target.result;
+    const prev=document.getElementById('tevaImgPrev');if(prev)prev.remove();
+    const p=document.createElement('div');p.className='tc-img-preview';p.id='tevaImgPrev';
+    p.innerHTML='<img src="'+tevaPendingImg+'"><span>Imagen adjunta</span><span class="tc-img-remove" onclick="tevaRemoveImg()">✕</span>';
+    document.querySelector('#tevaChat .tc-input').insertAdjacentElement('beforebegin',p);
+  };reader.readAsDataURL(file);input.value='';
+}
+function tevaRemoveImg(){tevaPendingImg=null;const p=document.getElementById('tevaImgPrev');if(p)p.remove()}
 async function tevaSend(){
   const inp=document.getElementById('tevaInput'),btn=document.getElementById('tevaSendBtn');
-  const txt=inp.value.trim();if(!txt)return;
-  inp.value='';btn.disabled=true;
-  tevaAddMsg('user',txt);
-  tevaMessages.push({role:'user',content:txt});
+  const txt=inp.value.trim();const img=tevaPendingImg;
+  if(!txt&&!img)return;
+  inp.value='';btn.disabled=true;tevaRemoveImg();
+  const displayTxt=txt||(img?'[Imagen enviada]':'');
+  tevaAddMsg('user',displayTxt,img);
+  let content=txt;
+  if(img)content=(txt?txt+'\n\n':'')+'[El asesor adjuntó una imagen del proyecto/propiedad]';
+  tevaMessages.push({role:'user',content:content});
+  tevaPendingImg=null;
   const d=document.getElementById('tevaMsgs');
   const typ=document.createElement('div');typ.className='tc-typing';typ.innerHTML='<span></span><span></span><span></span>';d.appendChild(typ);d.scrollTop=d.scrollHeight;
   try{
     const r=await fetch(TEVA_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:tevaMessages})});
     const data=await r.json();typ.remove();
-    const reply=data.reply||data.error||'Error de conexión';
+    const reply=data.reply||data.error||'Error de conexión. Llama directo al 612-128-4433.';
     tevaMessages.push({role:'assistant',content:reply});
     tevaAddMsg('bot',reply);
-  }catch(e){typ.remove();tevaAddMsg('bot','Error de conexión. Intenta de nuevo.')}
+  }catch(e){typ.remove();tevaAddMsg('bot','Error de conexión. Contacta directo a Global Real Estate: <strong>612-128-4433</strong>')}
   btn.disabled=false;inp.focus();
 }
 </script>
